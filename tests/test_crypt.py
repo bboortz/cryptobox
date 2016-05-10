@@ -23,7 +23,7 @@ class TestA(object):
     def test_init(self):
         crypt = Crypt()
         assert_equal(crypt.algorithm, "AES")
-        assert_not_equal(a.value, "Incorrect Value")
+        assert_not_equal(crypt.algorithm, "Incorrect Value")
 
     def test_encrypt(self):
         crypt = Crypt()
