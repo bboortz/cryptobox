@@ -1,8 +1,5 @@
 import os
-import sys
-testdir = os.path.dirname(__file__)
-srcdir = '..'
-sys.path.insert(0, os.path.abspath(os.path.join(testdir, srcdir)))
+
 
 from lib.config.appconfig import AppConfig
 from nose.tools import assert_equal
@@ -28,7 +25,7 @@ class TestAppConfig(object):
 
     def test_create_instance_default(self):
         appconfig = AppConfig.create_instance()
-        assert_equal(appconfig.ENV, "PROD")
+        assert_equal(appconfig.ENV, os.getenv('ENV', 'PROD'))
         assert_not_equal(appconfig.ENV, "QA")
         
     def test_create_instance_prod(self):
