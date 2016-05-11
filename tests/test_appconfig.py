@@ -1,5 +1,3 @@
-import os
-
 
 from lib.appconfig import AppConfig
 from nose.tools import assert_equal

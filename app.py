@@ -4,7 +4,7 @@ import sys
 import os
 from flask import Flask, __version__
 from flask import jsonify, make_response
-from lib.config.appconfig import *
+from lib.appconfig import *
 
 
 
