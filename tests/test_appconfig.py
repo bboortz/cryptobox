@@ -1,7 +1,7 @@
 import os
 
 
-from lib.config.appconfig import AppConfig
+from lib.appconfig import AppConfig
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
 from nose.tools import assert_raises

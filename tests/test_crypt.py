@@ -4,7 +4,7 @@ testdir = os.path.dirname(__file__)
 srcdir = '..'
 sys.path.insert(0, os.path.abspath(os.path.join(testdir, srcdir)))
 
-from lib.crypt.crypt import Crypt
+from lib.crypt import Crypt
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
 from nose.tools import assert_raises
