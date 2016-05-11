@@ -1,4 +1,3 @@
-import os
 
 class FlaskConfig(object):
     DEBUG = False
