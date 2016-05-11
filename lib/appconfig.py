@@ -31,4 +31,4 @@ class DevelopmentAppConfig(AppConfig):
 
 class TestingAppConfig(AppConfig):
     ENV = "TEST"
-    FLASKCONFIG = DevelopmentFlaskConfig
+    FLASKCONFIG = TestingFlaskConfig
