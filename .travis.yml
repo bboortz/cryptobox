@@ -12,8 +12,8 @@ install:
    - pip install -r requirements.txt
 env:
   - ENV=DEV
-    ENV=TEST
-    ENV=PROD
+  - ENV=TEST
+  - ENV=PROD
 script: nosetests --with-coverage -v tests
 
 
