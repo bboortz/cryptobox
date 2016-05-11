@@ -1,11 +1,17 @@
-from crypt import Crypt
+import os
+import sys
+testdir = os.path.dirname(__file__)
+srcdir = '..'
+sys.path.insert(0, os.path.abspath(os.path.join(testdir, srcdir)))
+
+from lib.crypt.crypt import Crypt
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
 from nose.tools import assert_raises
 from nose.tools import raises
 
 
-class TestA(object):
+class TestCrypt(object):
     @classmethod
     def setup_class(klass):
         """This method is run once for each class before any tests are run"""
