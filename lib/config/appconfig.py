@@ -1,5 +1,10 @@
 import os
-from flaskconfig import ProductionFlaskConfig, DevelopmentFlaskConfig, TestingFlaskConfig
+import sys
+testdir = os.path.dirname(__file__)
+srcdir = '..'
+sys.path.insert(0, os.path.abspath(os.path.join(testdir, srcdir)))
+
+from lib.config.flaskconfig import ProductionFlaskConfig, DevelopmentFlaskConfig, TestingFlaskConfig
 
 class AppConfig(object):
     IP = os.getenv('IP', '0.0.0.0')
