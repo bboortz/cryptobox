@@ -3,15 +3,20 @@ import sys
 import os
 from flask import Flask, __version__
 from flask import jsonify, make_response
+from appconfig import *
 
 
 IP = os.getenv('IP', '0.0.0.0')
 PORT = int( os.getenv('PORT', 8080) )
 APPNAME = "test"
 APPVERSION = "0.1"
+appconfig = ProductionAppConfig()
+print appconfig.FLASKCONFIG
 
 
 app = Flask(__name__)
+app.config.from_object('flaskconfig.ProductionFlaskConfig')
+#app.config.from_object('appconfig.FLASKCONFIG')
 
 
 @app.route('/alive')
@@ -20,11 +25,11 @@ def alive():
 
 @app.route('/api')
 def api():
-    return jsonify( { 'api': APPNAME, 'api-version': APPVERSION, 'flask-version': __version__ } )
+    return jsonify( { 'api': appconfig.APPNAME, 'api-version': appconfig.APPVERSION, 'flask-version': __version__ } )
 
 @app.route('/api/file')
 def api_test():
-    return jsonify( { 'api': APPNAME, 'api-version': APPVERSION, 'flask-version': __version__ } )
+    return jsonify( { 'api': appconfig.APPNAME, 'api-version': appconfig.APPVERSION, 'flask-version': __version__ } )
 
 @app.errorhandler(400)
 def bad_request(error):
@@ -41,4 +46,4 @@ def internal_error(error):
 
 
 if __name__ == '__main__':
-    app.run(host=IP, port=PORT, threaded=True, debug=True)
+    app.run(host=appconfig.IP, port=appconfig.PORT, threaded=True)
