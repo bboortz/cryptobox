@@ -20,4 +20,5 @@ encrypted dropbox like service to go.
 * DEV-TEST: http://cryptobox-bboortz.c9users.io/api
 * CI: https://travis-ci.org/profile/bboortz
 * CI-Status: https://api.travis-ci.org/bboortz/cryptobox.png?branch=master
+* Code Coverage: https://coveralls.io/github/bboortz/cryptobox
 * Heroku: https://dashboard.heroku.com/apps

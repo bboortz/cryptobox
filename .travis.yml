@@ -15,5 +15,5 @@ env:
 #  - ENV=TEST
   - ENV=PROD
 script: nosetests --with-coverage -v tests
-
-
+after_success:
+  - coveralls
