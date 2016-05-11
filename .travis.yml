@@ -17,3 +17,10 @@ env:
 script: nosetests --with-coverage -v tests
 after_success:
   - coveralls
+#deploy:
+#  provider: heroku
+#  api_key:
+#    secure: API_KEY
+#  app: cryptobox
+#  run:
+#    - "python app.py"
