@@ -1,22 +1,18 @@
+#!/usr/bin/env python
 #!flask/bin/python
 import sys
 import os
 from flask import Flask, __version__
 from flask import jsonify, make_response
-from appconfig import *
+from lib.config.appconfig import *
 
 
-IP = os.getenv('IP', '0.0.0.0')
-PORT = int( os.getenv('PORT', 8080) )
-APPNAME = "test"
-APPVERSION = "0.1"
-appconfig = ProductionAppConfig()
-print appconfig.FLASKCONFIG
+
+appconfig = AppConfig.create_instance()
 
 
 app = Flask(__name__)
-app.config.from_object('flaskconfig.ProductionFlaskConfig')
-#app.config.from_object('appconfig.FLASKCONFIG')
+app.config.from_object(appconfig.FLASKCONFIG)
 
 
 @app.route('/alive')
