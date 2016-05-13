@@ -1,13 +1,17 @@
+from cryptography.fernet import Fernet
+
 
 class Crypt:
     
     def __init__(self):
-        self.algorithm = "AES"
+        self.algorithm = "Fernet"
+        key = Fernet.generate_key()
+        self.f = Fernet(key)
     
-    def encrypt(self, data, key):
-        return True
+    def encrypt(self, data):
+        return self.f.encrypt(data)
         
-    def decrypt(self, data, key):
-        return True
+    def decrypt(self, token):
+        return self.f.decrypt(token)
         
     
