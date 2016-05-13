@@ -53,14 +53,31 @@ class TestApp(object):
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         
-    def test_post_file(self):
+    def test_post_file0(self):
         json = { 'file': 'lla' }
         rv = self.test_app.post('/api/file', data=json, follow_redirects=False)
         assert_equal(rv.status_code, 201)
         assert_not_equal(rv.status_code, 405)
         print rv.data
-        assert '"id": "0"' in rv.data        
-        assert '"status": "success"' in rv.data  
+        assert '"id": "0"' in rv.data
+        assert '"status": "success"' in rv.data
+        
+    def test_post_file1_and_get(self):
+        json = { 'KEY': 'VALUE' }
+        rv = self.test_app.post('/api/file', data=json, follow_redirects=False)
+        assert_equal(rv.status_code, 201)
+        assert_not_equal(rv.status_code, 405)
+        print rv.data
+        assert '"id": "1"' in rv.data
+        assert '"status": "success"' in rv.data
+        
+        #rv = self.test_app.get('/api/file/0')
+        #assert_equal(rv.status_code, 200)
+        #assert_not_equal(rv.status_code, 201)
+        #print rv.data
+        #assert '"KEY": "VALUE"' in rv.data
+        
+
         
 #    rv = self.app.post('/add', data=dict(
 #        title='<Hello>',
