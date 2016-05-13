@@ -20,11 +20,16 @@ def alive():
 
 @app.route('/api')
 def api():
-    return jsonify( { 'api': appconfig.APPNAME, 'api-version': appconfig.APPVERSION, 'flask-version': __version__ } )
+    return jsonify( appconfig.api_to_json() )
+
+@app.route('/api/config')
+def api_config():
+    return jsonify( appconfig.config_to_json() )
 
 @app.route('/api/file')
 def api_test():
-    return jsonify( { 'api': appconfig.APPNAME, 'api-version': appconfig.APPVERSION, 'flask-version': __version__ } )
+    return jsonify( { 'EXAMPLE': 'jooo' } )
+
 
 @app.errorhandler(404)
 def not_found(error):

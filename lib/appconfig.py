@@ -3,11 +3,11 @@ import os
 from lib.flaskconfig import ProductionFlaskConfig, DevelopmentFlaskConfig, TestingFlaskConfig
 
 class AppConfig(object):
-    IP = os.getenv('IP', '0.0.0.0')
-    PORT = int( os.getenv('PORT', 8080) )
     APPNAME = "test"
     APPVERSION = "0.1"
     ENV = "PROD"
+    IP = os.getenv('IP', '0.0.0.0')
+    PORT = int( os.getenv('PORT', 8080) )
     FLASKCONFIG = ProductionFlaskConfig
     
     @staticmethod
@@ -19,6 +19,28 @@ class AppConfig(object):
         elif env == 'TEST':
             result = TestingAppConfig()
             
+        return result
+        
+    def config_to_json(self):
+        result = { 
+            'api': self.APPNAME, 
+            'api-version': self.APPVERSION, 
+            'ENV': self.ENV,
+            'IP': self.IP,
+            'PORT': self.PORT,
+            'flask-version': self.FLASKCONFIG.__version__ ,
+            'flask-debug': self.FLASKCONFIG.DEBUG ,
+            'flask-testing': self.FLASKCONFIG.TESTING ,
+        } 
+        
+        return result
+    
+    def api_to_json(self):
+        result = { 
+            'api': self.APPNAME, 
+            'api-version': self.APPVERSION, 
+            'flask-version': self.FLASKCONFIG.__version__ 
+        } 
         return result
 
 class ProductionAppConfig(AppConfig):
