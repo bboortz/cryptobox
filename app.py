@@ -51,8 +51,8 @@ def api_post_file():
 	global db_id
 	json_str = ""
 	json_str = str(request.json)
-	bytes = json_str.encode()
-	content =  crypt.encrypt(bytes)
+	json_bytes = json_str.encode()
+	content =  crypt.encrypt(json_bytes)
 	print str( content )
 	item = { "%s" % db_id:  content }
 	db_id += 1
