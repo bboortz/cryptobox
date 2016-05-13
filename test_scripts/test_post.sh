@@ -1,6 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
-URL="https://cryptobox-bboortz.c9users.io/api/file"
+
+if [ -z "$URL" ]; then
+	URL="http://localhost:8080/api/file"
+fi
 
 curl --insecure -H "Content-Type: application/json" -X POST --data "{\"key-$RANDOM\": \"value-$RANDOM\" }" "$URL"
 #curl --insecure -H "Content-Type: application/json" -X POST --data "{\"key-$RANDOM\": { \"key-$RANDOM\": \"value-$RANDOM\" } }" ${URL}
