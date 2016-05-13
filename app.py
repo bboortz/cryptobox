@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-#!flask/bin/python
+#!/usr/bin/env python3
 
 from flask import Flask
 from flask import jsonify, make_response
