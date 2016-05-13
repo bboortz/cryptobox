@@ -2,7 +2,7 @@ from cryptography.fernet import Fernet
 
 
 class Crypt:
-    
+
     def __init__(self):
         self.algorithm = "Fernet"
         key = Fernet.generate_key()

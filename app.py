@@ -43,7 +43,7 @@ def api_get_file_id(file_id):
     #if len(file_id) == 0:
     #    abort(404)
     print db
-    return jsonify({'file': db[file_id_str]})
+    return jsonify( {'file': crypt.decrypt(db[file_id_str]) } )
     
 db = {}
 db_id = 0
