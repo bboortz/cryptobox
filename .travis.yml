@@ -1,15 +1,15 @@
 language: python
 python:
 - '2.7'
-- '3.5'
-- pypy
+#- '3.5'
+#- pypy
 install:
 - pip install -r requirements.txt
 env:
 - ENV=DEV
-- ENV=PROD
+#- ENV=PROD
 script: nosetests --with-coverage -v tests
-after_success:
+after_success:s
 - coveralls
 matrix:
   fast_finish: true
