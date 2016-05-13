@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #!flask/bin/python
 
-from flask import Flask, __version__
+from flask import Flask
 from flask import jsonify, make_response
 from lib.appconfig import *
 
