@@ -49,16 +49,20 @@ db_id = 0
 def api_post_file():
 	global db
 	global db_id
-	json_str = ""
+	
 	json_str = str(request.json)
 	json_bytes = json_str.encode()
 	content =  crypt.encrypt(json_bytes)
-	print str( content )
+	
 	item = { "%s" % db_id:  content }
 	db_id += 1
 	db.update(item)
 	return make_response(jsonify({'status': 'success', 'id': str(db_id-1) }), 201)
 
+
+@app.errorhandler(400)
+def bad_request(error):
+    return make_response(jsonify({'error': 'Bad Request'}), 400)
 
 @app.errorhandler(404)
 def not_found(error):

@@ -53,12 +53,16 @@ class TestApp(object):
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         
+    def test_get_file_wrong(self):
+        rv = self.test_app.get('/api/file/1000')
+        assert_equal(rv.status_code, 404)
+        assert_not_equal(rv.status_code, 200)
+        
     def test_post_file0(self):
         json = { 'file': 'lla' }
         rv = self.test_app.post('/api/file', data=json, follow_redirects=False)
         assert_equal(rv.status_code, 201)
         assert_not_equal(rv.status_code, 405)
-        print rv.data
         assert '"id": "0"' in rv.data
         assert '"status": "success"' in rv.data
         
@@ -67,7 +71,6 @@ class TestApp(object):
         rv = self.test_app.post('/api/file', data=json, follow_redirects=False)
         assert_equal(rv.status_code, 201)
         assert_not_equal(rv.status_code, 405)
-        print rv.data
         assert '"id": "1"' in rv.data
         assert '"status": "success"' in rv.data
         
@@ -77,12 +80,15 @@ class TestApp(object):
         #print rv.data
         #assert '"KEY": "VALUE"' in rv.data
         
+    
+        
+        
+#    def test_post_none_file(self):
+#        json = None
+#        rv = self.test_app.post('/api/file', data=None, follow_redirects=False)
+#        rv = self.test_app.post('/api/file', follow_redirects=False)
+#        assert_equal(rv.status_code, 400)
+#        assert_not_equal(rv.status_code, 401)
+        
 
         
-#    rv = self.app.post('/add', data=dict(
-#        title='<Hello>',
-#        text='<strong>HTML</strong> allowed here'
-#    ), follow_redirects=True)
-##    assert 'No entries here so far' not in rv.data
- #   assert '&lt;Hello&gt;' in rv.data
- #   assert '<strong>HTML</strong> allowed here' in rv.data
