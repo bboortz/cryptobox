@@ -9,7 +9,7 @@ env:
 - ENV=DEV
 #- ENV=PROD
 script: nosetests --with-coverage -v tests
-after_success:s
+after_success:
 - coveralls
 matrix:
   fast_finish: true
