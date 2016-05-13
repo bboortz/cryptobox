@@ -5,7 +5,7 @@ from lib.flaskconfig import ProductionFlaskConfig, DevelopmentFlaskConfig, Testi
 
 class AppConfig(object):
     APPNAME = "cryptobox"
-    APPVERSION = "0.1.1"
+    APPVERSION = "0.1.2"
     ENV = "PROD"
     IP = os.getenv('IP', '0.0.0.0')
     PORT = int( os.getenv('PORT', 8080) )
