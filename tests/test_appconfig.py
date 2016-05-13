@@ -46,3 +46,16 @@ class TestAppConfig(object):
         appconfig = AppConfig.create_instance("DEV")
         assert_equal(appconfig.ENV, "DEV")
         assert_not_equal(appconfig.ENV, "QA")
+    
+    def test_api_to_json(self):
+        appconfig = AppConfig.create_instance()
+        json = appconfig.api_to_json()
+        assert_equal(json['api'], "cryptobox")
+        assert_not_equal(json['api'], "PROD")
+        
+    def test_config_to_json(self):
+        appconfig = AppConfig.create_instance("DEV")
+        json = appconfig.config_to_json()
+        assert_equal(json['ENV'], "DEV")
+        assert_not_equal(json['ENV'], "PROD")
+        

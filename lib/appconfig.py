@@ -4,7 +4,7 @@ import platform
 from lib.flaskconfig import ProductionFlaskConfig, DevelopmentFlaskConfig, TestingFlaskConfig
 
 class AppConfig(object):
-    APPNAME = "test"
+    APPNAME = "cryptobox"
     APPVERSION = "0.1"
     ENV = "PROD"
     IP = os.getenv('IP', '0.0.0.0')
