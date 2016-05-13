@@ -18,24 +18,22 @@ class TestCrypt(object):
 
     def setUp(self):
         """This method is run once before _each_ test method is executed"""
+        self.crypt = Crypt()
 
     def teardown(self):
         """This method is run once after _each_ test method is executed"""
 
     def test_init(self):
-        crypt = Crypt()
-        assert_equal(crypt.algorithm, "AES")
-        assert_not_equal(crypt.algorithm, "Incorrect Value")
+        assert_equal(self.crypt.algorithm, "AES")
+        assert_not_equal(self.crypt.algorithm, "Incorrect Value")
 
     def test_encrypt(self):
-        crypt = Crypt()
-        assert_equal(crypt.encrypt(True, True), True)
-        assert_not_equal(crypt.encrypt(True, True), False)
+        assert_equal(self.crypt.encrypt(True, True), True)
+        assert_not_equal(self.crypt.encrypt(True, True), False)
         
     def test_decrypt(self):
-        crypt = Crypt()
-        assert_equal(crypt.decrypt(True, True), True)
-        assert_not_equal(crypt.decrypt(True, True), False)
+        assert_equal(self.crypt.decrypt(True, True), True)
+        assert_not_equal(self.crypt.decrypt(True, True), False)
 
 #    def test_raise_exc(self):
 #        a = A()

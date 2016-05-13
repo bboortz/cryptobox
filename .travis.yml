@@ -8,7 +8,7 @@ install:
 env:
 - ENV=DEV
 - ENV=PROD
-script: nosetests --with-coverage -v tests
+script: nosetests --with-coverage --cover-tests -v tests
 after_success:
 - coveralls
 matrix:
