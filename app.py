@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import Flask
-from flask import jsonify, make_response
+from flask import jsonify, make_response, request
 from lib.appconfig import *
 
 
@@ -13,21 +13,37 @@ app = Flask(__name__)
 app.config.from_object(appconfig.FLASKCONFIG)
 
 
-@app.route('/alive')
+@app.route('/alive', methods=['GET'])
 def alive():
     return jsonify( { 'alive': 'true' } )
 
-@app.route('/api')
+@app.route('/api', methods=['GET'])
 def api():
     return jsonify( appconfig.api_to_json() )
 
-@app.route('/api/config')
-def api_config():
+@app.route('/api/config', methods=['GET'])
+def api_get_config():
     return jsonify( appconfig.config_to_json() )
 
-@app.route('/api/file')
-def api_test():
+@app.route('/api/file', methods=['GET'])
+def api_get_file():
     return jsonify( { 'EXAMPLE': 'jooo' } )
+    
+db = {}
+db_id = 0
+@app.route('/api/file', methods=['POST'])
+def api_post_file():
+	global db
+	global db_id
+	content =  request.json
+	print content
+	print dir(content)
+	#json1 = content.replace("'", "\"")
+	#dict = json.loads( content )
+	item = { "%s" % db_id:  content }
+	db_id += 1
+	db.update(item)
+	return make_response(jsonify({'status': 'success', 'id': db_id }), 201)
 
 
 @app.errorhandler(404)

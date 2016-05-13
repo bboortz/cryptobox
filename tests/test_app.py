@@ -23,19 +23,25 @@ class TestApp(object):
     def teardown(self):
         """This method is run once after _each_ test method is executed"""
 
-    def test_slash(self):
+    def test_get_slash(self):
         rv = self.test_app.get('/')
         assert_equal(rv.status_code, 404)
         assert_not_equal(rv.status_code, 201)
 
-    def test_alive(self):
+    def test_get_alive(self):
         rv = self.test_app.get('/alive')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
 
-    def test_api(self):
+    def test_get_api(self):
         rv = self.test_app.get('/api')
         assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
+        
+    def test_post_api(self):
+        test_app = app.test_client()
+        rv = test_app.post('/api/api')
+        assert_equal(rv.status_code, 405)
         assert_not_equal(rv.status_code, 201)
 
     def test_config(self):
@@ -43,13 +49,13 @@ class TestApp(object):
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
 
+    def test_file(self):
+        rv = self.test_app.get('/api/file')
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
+        
     def test_post_api(self):
         test_app = app.test_client()
         rv = test_app.post('/api/file')
         assert_equal(rv.status_code, 405)
-        assert_not_equal(rv.status_code, 201)
-
-    def test_file(self):
-        rv = self.test_app.get('/api/file')
-        assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
