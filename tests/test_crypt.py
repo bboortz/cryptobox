@@ -28,7 +28,7 @@ class TestCrypt(object):
         assert_not_equal(self.crypt.algorithm, "Incorrect Value")
 
     def test_encrypt_and_decrypt(self):
-        secret_msg = "test message. foobar test. blub."
+        secret_msg = b"test message. foobar test. blub."
         token = self.crypt.encrypt(secret_msg)
         new_msg = self.crypt.decrypt(token)
         assert_equal(secret_msg, new_msg)
