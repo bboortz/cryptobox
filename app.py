@@ -38,7 +38,7 @@ def api_get_file_id(file_id):
     if file_id == None:
         abort(404)
     file_id_str = str(file_id)
-    if not db.has_key(file_id_str):
+    if not file_id_str in db:
         abort(404)
     
     return jsonify( {'file': crypt.decrypt(db[file_id_str]) } )
