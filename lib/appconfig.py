@@ -1,4 +1,5 @@
 import os
+import platform
 
 from lib.flaskconfig import ProductionFlaskConfig, DevelopmentFlaskConfig, TestingFlaskConfig
 
@@ -8,6 +9,7 @@ class AppConfig(object):
     ENV = "PROD"
     IP = os.getenv('IP', '0.0.0.0')
     PORT = int( os.getenv('PORT', 8080) )
+    PYTHONVERSION = platform.python_version()
     FLASKCONFIG = ProductionFlaskConfig
     
     @staticmethod
@@ -28,6 +30,7 @@ class AppConfig(object):
             'ENV': self.ENV,
             'IP': self.IP,
             'PORT': self.PORT,
+            'python-version': self.PYTHONVERSION,
             'flask-version': self.FLASKCONFIG.__version__ ,
             'flask-debug': self.FLASKCONFIG.DEBUG ,
             'flask-testing': self.FLASKCONFIG.TESTING ,
@@ -39,6 +42,7 @@ class AppConfig(object):
         result = { 
             'api': self.APPNAME, 
             'api-version': self.APPVERSION, 
+            'python-version': self.PYTHONVERSION,
             'flask-version': self.FLASKCONFIG.__version__ 
         } 
         return result

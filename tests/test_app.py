@@ -40,6 +40,12 @@ class TestApp(object):
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         
+    def test_config(self):
+        test_app = app.test_client()
+        rv = test_app.get('/api/config')
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
+        
     def test_post_api(self):
         test_app = app.test_client()
         rv = test_app.post('/api/file')
