@@ -1,4 +1,4 @@
-from flask import jsonify, __version__
+from flask import __version__
 
 
 class FlaskConfig(object):

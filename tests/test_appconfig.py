@@ -3,8 +3,6 @@ import os
 from lib.appconfig import AppConfig
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
-from nose.tools import assert_raises
-from nose.tools import raises
 
 
 class TestAppConfig(object):
