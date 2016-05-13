@@ -34,12 +34,6 @@ class TestCrypt(object):
         assert_equal(secret_msg, new_msg)
         assert_not_equal(secret_msg, "test message.")
         
-    def test_encrypt(self):
-        secret_msg = b"test message. foobar test. blub."
-        token = self.crypt.encrypt(secret_msg)
-        token_str = str(token)
-        assert_equal(token_str.startswith('gAAAA', 0, 5), True)
-        assert_not_equal(token_str.startswith('gAAAA', 0, 5), False)
         
 #    def test_encrypt(self):
 #        self.token = self.crypt.encrypt("lala")

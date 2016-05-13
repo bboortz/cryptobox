@@ -58,7 +58,9 @@ class TestApp(object):
         rv = self.test_app.post('/api/file', data=json, follow_redirects=False)
         assert_equal(rv.status_code, 201)
         assert_not_equal(rv.status_code, 405)
-        assert '"status": "success"' in rv.data        
+        print rv.data
+        assert '"id": "0"' in rv.data        
+        assert '"status": "success"' in rv.data  
         
 #    rv = self.app.post('/add', data=dict(
 #        title='<Hello>',

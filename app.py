@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import Flask
-from flask import jsonify, make_response, request
+from flask import jsonify, make_response, request, abort
 from lib.appconfig import *
 from lib.crypt import Crypt
 
@@ -30,6 +30,20 @@ def api_get_config():
 @app.route('/api/file', methods=['GET'])
 def api_get_file():
     return jsonify( db )
+
+@app.route('/api/file/<int:file_id>', methods=['GET'])    
+def api_get_file_id(file_id):
+    global db
+    print db.keys()
+    if file_id == None:
+        abort(404)
+    file_id_str = str(file_id)
+    if not db.has_key(file_id_str):
+        abort(404)
+    #if len(file_id) == 0:
+    #    abort(404)
+    print db
+    return jsonify({'file': db[file_id_str]})
     
 db = {}
 db_id = 0
@@ -45,7 +59,7 @@ def api_post_file():
 	item = { "%s" % db_id:  content }
 	db_id += 1
 	db.update(item)
-	return make_response(jsonify({'status': 'success', 'id': db_id }), 201)
+	return make_response(jsonify({'status': 'success', 'id': str(db_id-1) }), 201)
 
 
 @app.errorhandler(404)
