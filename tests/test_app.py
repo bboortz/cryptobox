@@ -39,23 +39,31 @@ class TestApp(object):
         assert_not_equal(rv.status_code, 201)
         
     def test_post_api(self):
-        test_app = app.test_client()
-        rv = test_app.post('/api/api')
-        assert_equal(rv.status_code, 405)
+        rv = self.test_app.post('/api/api')
+        assert_equal(rv.status_code, 404)
         assert_not_equal(rv.status_code, 201)
 
-    def test_config(self):
+    def test_get_config(self):
         rv = self.test_app.get('/api/config')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
 
-    def test_file(self):
+    def test_get_file(self):
         rv = self.test_app.get('/api/file')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         
-    def test_post_api(self):
-        test_app = app.test_client()
-        rv = test_app.post('/api/file')
-        assert_equal(rv.status_code, 405)
-        assert_not_equal(rv.status_code, 201)
+    def test_post_file(self):
+        json = { 'file': 'lla' }
+        rv = self.test_app.post('/api/file', data=json, follow_redirects=False)
+        assert_equal(rv.status_code, 201)
+        assert_not_equal(rv.status_code, 405)
+        assert '"status": "success"' in rv.data        
+        
+#    rv = self.app.post('/add', data=dict(
+#        title='<Hello>',
+#        text='<strong>HTML</strong> allowed here'
+#    ), follow_redirects=True)
+##    assert 'No entries here so far' not in rv.data
+ #   assert '&lt;Hello&gt;' in rv.data
+ #   assert '<strong>HTML</strong> allowed here' in rv.data

@@ -3,10 +3,12 @@
 from flask import Flask
 from flask import jsonify, make_response, request
 from lib.appconfig import *
+from lib.crypt import Crypt
 
 
 
 appconfig = AppConfig.create_instance()
+crypt = Crypt()
 
 
 app = Flask(__name__)
@@ -27,7 +29,7 @@ def api_get_config():
 
 @app.route('/api/file', methods=['GET'])
 def api_get_file():
-    return jsonify( { 'EXAMPLE': 'jooo' } )
+    return jsonify( db )
     
 db = {}
 db_id = 0
@@ -35,11 +37,11 @@ db_id = 0
 def api_post_file():
 	global db
 	global db_id
-	content =  request.json
+	json_str = ""
+	json_str = str(request.json)
+	bytes = json_str.encode()
+	content =  crypt.encrypt(bytes)
 	print content
-	print dir(content)
-	#json1 = content.replace("'", "\"")
-	#dict = json.loads( content )
 	item = { "%s" % db_id:  content }
 	db_id += 1
 	db.update(item)
