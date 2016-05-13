@@ -4,7 +4,7 @@ from lib.flaskconfig import ProductionFlaskConfig, DevelopmentFlaskConfig, Testi
 
 class AppConfig(object):
     IP = os.getenv('IP', '0.0.0.0')
-    PORT = int( os.getenv('PORT', 8080) )
+    PORT = int( os.getenv('PORT', 80) )
     APPNAME = "test"
     APPVERSION = "0.1"
     ENV = "PROD"
