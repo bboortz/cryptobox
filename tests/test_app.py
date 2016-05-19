@@ -66,20 +66,18 @@ class TestApp(object):
         assert '"id": "0"' in str(rv.data)
         assert '"status": "success"' in str(rv.data)
         
-        rv = self.test_app.get('/api/file/0')
-        assert_equal(rv.status_code, 200)
-        assert_not_equal(rv.status_code, 201)
-        #print rv.data
-        #assert '"KEY": "VALUE"' in rv.data
-        
         
     def test_post_file1_and_get(self):
-        json = { 'KEY': 'VALUE' }
+        json = "{ 'KEY': 'VALUE' }"
         rv = self.test_app.post('/api/file', data=json, follow_redirects=False)
         assert_equal(rv.status_code, 201)
         assert_not_equal(rv.status_code, 405)
         assert '"id": "1"' in str(rv.data)
         assert '"status": "success"' in str(rv.data)
+        
+        rv = self.test_app.get('/api/file/1')
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
         
         #rv = self.test_app.get('/api/file/0')
         #assert_equal(rv.status_code, 200)
