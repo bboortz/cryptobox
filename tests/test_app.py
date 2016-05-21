@@ -107,9 +107,7 @@ class TestApp(object):
         rv = self.test_app.get('/api/file/1', content_type = 'application/json', headers=headers)
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
-        print rv.data
         data = json.loads( str(rv.data) )
-        print data['file']['name']
         #file_dict = json.loads(data['file'])
         assert_equal(data['file']['name'], 'Jessy')
         
