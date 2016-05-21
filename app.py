@@ -8,8 +8,9 @@ from flask_wtf import Form
 from lib.appconfig import *
 from lib.wtfforms import *
 from lib.flaskhelper import *
+from lib.jsonhelper import *
 from lib.crypt import Crypt
-import json
+import simplejson as json
 
 
 
@@ -76,6 +77,11 @@ def api_get_file_id(file_id):
     if file == None  or  file == ""  or  file.__sizeof__() == 0:
         abort(404)
     
+    print file
+    print json.dumps(file)
+    #d = dict(json.loads( json.dumps(file) ))
+    #print d.keys()
+    
     return make_response( jsonify( {'file': file } ) , 200 )
     
 db = {}
@@ -87,13 +93,14 @@ def api_post_file():
     form = UploadForm()
 
     if is_mimetype_json():
-        json = request.get_json()
+        json_dict = request.get_json()
         if json == None:
             abort(400)
-        json_str = str(json)
-        if json_str == "" or json_str.__sizeof__() == 0:
-            abort(400)
-        json_bytes = json_str.encode()
+        #json_str = strj(son)
+        #if json_str == "" or json_str.__sizeof__() == 0:
+        #    abort(400)
+        #json_bytes = json_str.encode()
+        json_bytes=dict_to_bytes(json_dict)
         content = crypt.encrypt(json_bytes)
         item = { "%s" % db_id: content }
         
