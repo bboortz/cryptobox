@@ -80,6 +80,11 @@ class TestApp(object):
         assert_equal(rv.status_code, 404)
         assert_not_equal(rv.status_code, 200)
         
+    def test_get_file_alphabetical(self):
+        rv = self.test_app.get('/api/file/abcd')
+        assert_equal(rv.status_code, 404)
+        assert_not_equal(rv.status_code, 200)
+        
     def test_post_file0_text(self):
         data = dict(content='beispiel text 123')
         rv = self.test_app.post('/api/file', data=data , follow_redirects=False)

@@ -35,7 +35,6 @@ def home():
 @app.route('/upload', methods=['GET'])
 def upload():
     form = UploadForm()
-    
     return render_template('upload.html', form=form)
     
 # Define a route for the default URL, which loads the form
@@ -46,7 +45,7 @@ def list():
 # Define a route for the default URL, which loads the form
 @app.route('/documentation')
 def documentation():
-    return render_template('documentation.html', result=db)
+    return render_template('documentation.html')
 
 
 
