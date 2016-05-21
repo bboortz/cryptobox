@@ -3,7 +3,6 @@
 from app import app
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
-from json import dumps
 import json
 
 
