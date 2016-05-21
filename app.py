@@ -72,7 +72,7 @@ def api_get_file_id(file_id):
         abort(404)
     
     file = crypt.decrypt(db[file_id_str])
-    if file == None  or  file == ""  or  file.__sizeof__() == 0  or  file == b'None':
+    if file == None  or  file == ""  or  file.__sizeof__() == 0:
         abort(404)
     
     return make_response( jsonify( {'file': file } ) , 200 )
