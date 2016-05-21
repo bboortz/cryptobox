@@ -1,11 +1,17 @@
-from flask import __version__
+from flask import __version__ as FLASK_VERSION
+from flask_bootstrap import __version__ as FLASK_BOOTSTRAP_VERSION
 
 
 class FlaskConfig(object):
     DEBUG = False
     TESTING = False
-    __version__ = __version__
+    FLASK_VERSION = FLASK_VERSION
+    FLASK_BOOTSTRAP_VERSION = FLASK_BOOTSTRAP_VERSION
+    
     #DATABASE_URI = 'sqlite://:memory:'
+    BOOTSTRAP_USE_MINIFIED = True
+    BOOTSTRAP_USE_CDN = False
+    BOOTSTRAP_FONTAWESOME = True
     
 
 class ProductionFlaskConfig(FlaskConfig):

@@ -31,9 +31,10 @@ class AppConfig(object):
             'IP': self.IP,
             'PORT': self.PORT,
             'python-version': self.PYTHONVERSION,
-            'flask-version': self.FLASKCONFIG.__version__ ,
+            'flask-version': self.FLASKCONFIG.FLASK_VERSION ,
             'flask-debug': self.FLASKCONFIG.DEBUG ,
             'flask-testing': self.FLASKCONFIG.TESTING ,
+            'flask-bootstrap-version': self.FLASKCONFIG.FLASK_BOOTSTRAP_VERSION,
         } 
         
         return result
@@ -43,7 +44,8 @@ class AppConfig(object):
             'api': self.APPNAME, 
             'api-version': self.APPVERSION, 
             'python-version': self.PYTHONVERSION,
-            'flask-version': self.FLASKCONFIG.__version__ 
+            'flask-version': self.FLASKCONFIG.FLASK_VERSION,
+            'flask-bootstrap-version': self.FLASKCONFIG.FLASK_BOOTSTRAP_VERSION,
         } 
         return result
 
