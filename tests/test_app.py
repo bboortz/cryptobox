@@ -104,10 +104,14 @@ class TestApp(object):
         
         
     def test_post_file0_text_wrong_form(self):
-        
         data = dict(wrongkey='data1')
         rv = self.test_app.post('/api/file', data=data , follow_redirects=False)
 
+        assert_equal(rv.status_code, 400)
+        assert_not_equal(rv.status_code, 405)
+        
+    def test_post_file0_text_none(self):
+        rv = self.test_app.post('/api/file', data=None , follow_redirects=False)
         assert_equal(rv.status_code, 400)
         assert_not_equal(rv.status_code, 405)
         
@@ -138,6 +142,15 @@ class TestApp(object):
         json_data_length = len(json_data)
         headers.append(('Content-Length', json_data_length))
         rv = self.test_app.post('/api/file', data=json_data, headers=headers, follow_redirects=False)
+        assert_equal(rv.status_code, 400)
+        assert_not_equal(rv.status_code, 405)
+        
+    def test_post_file1_None_json(self):
+        headers = [('Content-Type', 'application/json')]
+        json_data = "FAKE JSON"
+        json_data_length = len(json_data)
+        headers.append(('Content-Length', json_data_length))
+        rv = self.test_app.post('/api/file', data=None, headers=headers, follow_redirects=False)
         assert_equal(rv.status_code, 400)
         assert_not_equal(rv.status_code, 405)
        
