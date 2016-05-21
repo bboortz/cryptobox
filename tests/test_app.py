@@ -92,11 +92,11 @@ class TestApp(object):
         assert '"status": "success"' in str(rv.data)
         
         
+        
+        rv = self.test_app.get('/api/file/1')
         #
-        # get test removed due description problems with the unittest library
+        # assert removed due description problems with the unittest library
         #
-        #rv = self.test_app.get('/api/file/2')
-        #print rv.data
         #assert_equal(rv.status_code, 200)
         #assert_not_equal(rv.status_code, 201)
         
