@@ -2,7 +2,7 @@
 
 from flask import Flask
 from flask import jsonify, make_response, request, abort
-from flask import render_template, url_for, flash, escape, flash, redirect, Markup
+from flask import render_template, url_for, flash, redirect, Markup
 from flask_bootstrap import Bootstrap
 from flask_wtf import Form
 from lib.appconfig import *
