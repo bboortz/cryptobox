@@ -34,13 +34,13 @@ def api_get_file():
 @app.route('/api/file/<int:file_id>', methods=['GET'])
 def api_get_file_id(file_id):
     global db
-
+    
     file_id_str = str(file_id)
     if not file_id_str in db:
         abort(404)
     
     file = crypt.decrypt(db[file_id_str])
-    if file == None:
+    if file == None  or  file == ""  or  file.__sizeof__() == 0  or  file == b'None':
         abort(404)
     
     return make_response( jsonify( {'file': file } ) , 200 )
