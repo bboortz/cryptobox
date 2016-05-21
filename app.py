@@ -84,7 +84,7 @@ def api_get_file_id(file_id):
     try:
         file_dict = json.loads(file)
         return make_response( jsonify( {'file': file_dict } ) , 200 )
-    except:
+    except Exception:
         return make_response( jsonify( {'file': file } ) , 200 )
         
     #print file_dict
