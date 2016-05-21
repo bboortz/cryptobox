@@ -92,7 +92,7 @@ class TestApp(object):
         json_data = json.dumps(data)
         json_data_length = len(json_data)
         headers.append(('Content-Length', json_data_length))
-        rv = self.test_app.post('/api/file', data=json.dumps(dict(name='bar')), content_type = 'application/json', headers=headers, follow_redirects=False)
+        rv = self.test_app.post('/api/file', data=json_data, content_type = 'application/json', headers=headers, follow_redirects=False)
         assert_equal(rv.status_code, 201)
         assert_not_equal(rv.status_code, 405)
         assert '"id": "1"' in str(rv.data)
