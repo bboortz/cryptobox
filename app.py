@@ -76,11 +76,6 @@ def api_get_file_id(file_id):
     if file == None  or  file == ""  or  file.__sizeof__() == 0:
         abort(404)
     
-    print file
-    print json.dumps(file)
-    #d = dict(json.loads( json.dumps(file) ))
-    #print d.keys()
-    
     return make_response( jsonify( {'file': file } ) , 200 )
     
 db = {}
@@ -93,7 +88,7 @@ def api_post_file():
 
     if is_mimetype_json():
         json_dict = request.get_json()
-        if json == None:
+        if json_dict == None:
             abort(400)
         json_bytes=dict_to_bytes(json_dict)
         content = crypt.encrypt(json_bytes)

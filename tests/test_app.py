@@ -3,7 +3,7 @@
 from app import app
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
-from lib.jsonhelper import string_to_dict
+import json
 
 
 class TestApp(object):
@@ -77,7 +77,7 @@ class TestApp(object):
         rv = self.test_app.get('/api/file/0')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
-        data = string_to_dict(rv.data)
+        data = json.loads(rv.data)
         assert_equal(data['file'], 'beispiel text 123')
         
         
