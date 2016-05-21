@@ -2,10 +2,15 @@
 
 from flask import Flask
 from flask import jsonify, make_response, request, abort
-from flask import render_template, url_for
+from flask import render_template, url_for, flash, escape, flash, redirect, Markup
 from flask_bootstrap import Bootstrap
+from flask_wtf import Form
 from lib.appconfig import *
+from lib.wtfforms import *
+from lib.flaskhelper import *
 from lib.crypt import Crypt
+
+
 
 
 
@@ -20,17 +25,19 @@ Bootstrap(app)
 
 
 # Define a route for the default URL, which loads the form
-@app.route('/')
+@app.route('/', methods=['GET'])
 def home():
     return render_template('home.html', result=db)
 
 # Define a route for the default URL, which loads the form
-@app.route('/upload')
+@app.route('/upload', methods=['GET'])
 def upload():
-    return render_template('upload.html', result=db)
+    form = UploadForm()
+    
+    return render_template('upload.html', form=form)
     
 # Define a route for the default URL, which loads the form
-@app.route('/list')
+@app.route('/list', methods=['GET'])
 def list():
     return render_template('list.html', result=db)
 
@@ -39,27 +46,6 @@ def list():
 def documentation():
     return render_template('documentation.html', result=db)
 
-
-
-# Define a route for the action of the form, for example '/hello/'
-# We are also defining which type of requests this route is 
-# accepting: POST requests in this case
-@app.route('/submit', methods=['POST'])
-def submit  ():
-    global db_id
-    json_str=request.form['json']
-    
-    if json_str == None  or  json_str == ""  or  json_str.__sizeof__() == 0:
-        abort(400)
-    
-    json_bytes = json_str.encode()
-    content =  crypt.encrypt(json_bytes)
-    item = { "%s" % db_id:  content }
-    db_id += 1
-    db.update(item)
-    result = {'status': 'success', 'id': str(db_id-1) }
-    
-    return render_template('form_action.html', result=result)
 
 
 
@@ -81,8 +67,6 @@ def api_get_file():
 
 @app.route('/api/file/<int:file_id>', methods=['GET'])
 def api_get_file_id(file_id):
-    global db
-    
     file_id_str = str(file_id)
     if not file_id_str in db:
         abort(404)
@@ -99,20 +83,37 @@ db_id = 0
 def api_post_file():
     global db
     global db_id
+    item = { "%s" % db_id:  None }
     
-    json_str = str(request.json)
-    
-    if json_str == None  or  json_str == ""  or  json_str.__sizeof__() == 0:
-        abort(400)
-    
-    json_bytes = json_str.encode()
-    content =  crypt.encrypt(json_bytes)
-    
-    item = { "%s" % db_id:  content }
+    if request_wants_json():
+        json_str = str( request.get_json() )
+        if json_str == None or json_str == "" or json_str.__sizeof__() == 0:
+            abort(400)
+        json_bytes = json_str.encode()
+        content = crypt.encrypt(json_bytes)
+        item = { "%s" % db_id: content }
+        
+    else:
+        form = UploadForm()
+        
+        content_str=request.form['content']
+        if content_str == None  or  content_str == ""  or  content_str.__sizeof__() == 0:
+            abort(400)
+        content_bytes = content_str.encode()
+        content =  crypt.encrypt(content_bytes)
+        item = { "%s" % db_id:  content }
+        
+    new_id = db_id    
+    url = "%s/%d" % (url_for('api_get_file', _external=True), new_id)
     db_id += 1
     db.update(item)
     
-    return make_response(jsonify({'status': 'success', 'id': str(db_id-1) }), 201)
+    if form.validate_on_submit():
+        message = Markup("You have successfully uploaded the content! Access url: <a href='%s'>%s</a>" % (url,url) )
+        flash(message)
+        return redirect(url_for('upload'))
+    
+    return make_response(jsonify({'status': 'success', 'id': str(new_id), 'url': url }), 201)
 
 
 @app.errorhandler(400)
