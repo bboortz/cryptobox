@@ -29,11 +29,6 @@ class TestApp(object):
         rv = self.test_app.get('/')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
-    
-    def test_get_submit(self):
-        rv = self.test_app.get('/submit')
-        assert_equal(rv.status_code, 405)
-        assert_not_equal(rv.status_code, 201)
         
     def test_get_alive(self):
         rv = self.test_app.get('/alive')
@@ -70,13 +65,8 @@ class TestApp(object):
         assert_equal(rv.status_code, 404)
         assert_not_equal(rv.status_code, 200)
         
-    def test_post_file0(self):
-        headers = [('Content-Type', 'application/json')]
-        data = {'name': 'Chris', 'testcase': 'test_post_file0'}
-        json_data = json.dumps(data)
-        json_data_length = len(json_data)
-        headers.append(('Content-Length', json_data_length))
-        #rv = self.test_app.post('/api/file', data=data, headers=headers, follow_redirects=False)
+    def test_post_file0_text(self):
+        data = dict(content='beispiel text 123')
         rv = self.test_app.post('/api/file', data=data , follow_redirects=False)
 
         assert_equal(rv.status_code, 201)
@@ -86,31 +76,42 @@ class TestApp(object):
         
         #data = dict(name="Jesse")
         #rv = self.test_app.post('/api/file', data, follow_redirects=False)
+    
+    def test_post_file0_text_wrong_form(self):
         
-    def test_post_file1_and_get(self):
+        data = dict(wrongkey='data1')
+        rv = self.test_app.post('/api/file', data=data , follow_redirects=False)
+
+        assert_equal(rv.status_code, 400)
+        assert_not_equal(rv.status_code, 405)
+        
+    
+    def test_post_file1_json(self):
         headers = [('Content-Type', 'application/json')]
-        data = {'name': 'Jesse', 'testcase': 'test_post_file1_and_get'}
+        data = {'name': 'Jessy', 'testcase': 'test_post_file1_and_get'}
         json_data = json.dumps(data)
         json_data_length = len(json_data)
         headers.append(('Content-Length', json_data_length))
-        rv = self.test_app.post('/api/file', data=data, follow_redirects=False)
-        
+        rv = self.test_app.post('/api/file', data=json_data, headers=headers, follow_redirects=False)
         assert_equal(rv.status_code, 201)
         assert_not_equal(rv.status_code, 405)
         assert '"id": "1"' in str(rv.data)
         assert '"status": "success"' in str(rv.data)
         
-        
-        
         rv = self.test_app.get('/api/file/1')
-        #
-        # assert removed due description problems with the unittest library
-        #
-        #assert_equal(rv.status_code, 200)
-        #assert_not_equal(rv.status_code, 201)
-        
-        #data = json.loads(resp.data)
-        #self.assert_equal(data['username'], my_user.username)
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
+    
+    
+    def test_post_file1_fake_json(self):
+        headers = [('Content-Type', 'application/json')]
+        json_data = "FAKE JSON"
+        json_data_length = len(json_data)
+        headers.append(('Content-Length', json_data_length))
+        rv = self.test_app.post('/api/file', data=json_data, headers=headers, follow_redirects=False)
+        assert_equal(rv.status_code, 400)
+        assert_not_equal(rv.status_code, 405)
+       
         
     def test_unknown_function(self):
         rv = self.test_app.delete('/api/file/0', follow_redirects=False)

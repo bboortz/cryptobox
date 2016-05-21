@@ -81,21 +81,22 @@ db = {}
 db_id = 0
 @app.route('/api/file', methods=['POST'])
 def api_post_file():
-    global db
     global db_id
     item = { "%s" % db_id:  None }
-    
-    if request_wants_json():
-        json_str = str( request.get_json() )
-        if json_str == None or json_str == "" or json_str.__sizeof__() == 0:
+    form = UploadForm()
+
+    if is_mimetype_json():
+        json = request.get_json()
+        if json == None:
+            abort(400)
+        json_str = str(json)
+        if json_str == "" or json_str.__sizeof__() == 0:
             abort(400)
         json_bytes = json_str.encode()
         content = crypt.encrypt(json_bytes)
         item = { "%s" % db_id: content }
         
     else:
-        form = UploadForm()
-        
         content_str=request.form['content']
         if content_str == None  or  content_str == ""  or  content_str.__sizeof__() == 0:
             abort(400)
