@@ -77,7 +77,7 @@ class TestApp(object):
         rv = self.test_app.get('/api/file/0')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
-        data = json.loads(rv.data)
+        data = json.loads( str(rv.data) )
         assert_equal(data['file'], 'beispiel text 123')
         
         
