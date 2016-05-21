@@ -8,9 +8,8 @@ from flask_wtf import Form
 from lib.appconfig import *
 from lib.wtfforms import *
 from lib.flaskhelper import *
-from lib.jsonhelper import *
+from lib.jsonhelper import dict_to_bytes
 from lib.crypt import Crypt
-import simplejson as json
 
 
 
@@ -96,10 +95,6 @@ def api_post_file():
         json_dict = request.get_json()
         if json == None:
             abort(400)
-        #json_str = strj(son)
-        #if json_str == "" or json_str.__sizeof__() == 0:
-        #    abort(400)
-        #json_bytes = json_str.encode()
         json_bytes=dict_to_bytes(json_dict)
         content = crypt.encrypt(json_bytes)
         item = { "%s" % db_id: content }
