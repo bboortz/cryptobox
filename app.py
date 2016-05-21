@@ -29,6 +29,10 @@ def home():
 def submit  ():
     global db_id
     json_str=request.form['json']
+    
+    if json_str == None  or  json_str == ""  or  json_str.__sizeof__() == 0:
+        abort(400)
+    
     json_bytes = json_str.encode()
     content =  crypt.encrypt(json_bytes)
     item = { "%s" % db_id:  content }
@@ -36,7 +40,7 @@ def submit  ():
     db.update(item)
     result = {'status': 'success', 'id': str(db_id-1) }
     
-    return render_template('form_action.html', json=result)
+    return render_template('form_action.html', result=result)
 
 
 
@@ -74,17 +78,22 @@ db = {}
 db_id = 0
 @app.route('/api/file', methods=['POST'])
 def api_post_file():
-	global db
-	global db_id
-	
-	json_str = str(request.json)
-	json_bytes = json_str.encode()
-	content =  crypt.encrypt(json_bytes)
-	
-	item = { "%s" % db_id:  content }
-	db_id += 1
-	db.update(item)
-	return make_response(jsonify({'status': 'success', 'id': str(db_id-1) }), 201)
+    global db
+    global db_id
+    
+    json_str = str(request.json)
+    
+    if json_str == None  or  json_str == ""  or  json_str.__sizeof__() == 0:
+        abort(400)
+    
+    json_bytes = json_str.encode()
+    content =  crypt.encrypt(json_bytes)
+    
+    item = { "%s" % db_id:  content }
+    db_id += 1
+    db.update(item)
+    
+    return make_response(jsonify({'status': 'success', 'id': str(db_id-1) }), 201)
 
 
 @app.errorhandler(400)

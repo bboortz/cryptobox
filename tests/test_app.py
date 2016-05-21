@@ -29,7 +29,12 @@ class TestApp(object):
         rv = self.test_app.get('/')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
-
+    
+    def test_get_submit(self):
+        rv = self.test_app.get('/submit')
+        assert_equal(rv.status_code, 405)
+        assert_not_equal(rv.status_code, 201)
+        
     def test_get_alive(self):
         rv = self.test_app.get('/alive')
         assert_equal(rv.status_code, 200)
