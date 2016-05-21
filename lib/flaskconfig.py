@@ -9,6 +9,7 @@ class FlaskConfig(object):
     FLASK_VERSION = FLASK_VERSION
     FLASK_BOOTSTRAP_VERSION = FLASK_BOOTSTRAP_VERSION
     SECRET_KEY = SECRET_KEY = os.getenv('FLASK_SECRET_KEY', 'eoki99)u9uJ)J)J9jhgu5hg49)jjjJJKKK0Ij9jf')
+    JSONIFY_PRETTYPRINT_REGULAR = False
     
     #DATABASE_URI = 'sqlite://:memory:'
     BOOTSTRAP_USE_MINIFIED = True

@@ -76,6 +76,7 @@ def api_get_file_id(file_id):
     if file == None  or  file == ""  or  file.__sizeof__() == 0:
         abort(404)
     
+    #return make_response( json.dumps( {'file': file } ) ) , 200 )
     return make_response( jsonify( {'file': file } ) , 200 )
     
 db = {}
