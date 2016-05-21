@@ -39,8 +39,11 @@ def api_get_file_id(file_id):
     if not file_id_str in db:
         abort(404)
     
-    #return make_response( jsonify( {'file': crypt.decrypt(db[file_id_str]) } ) , 200 )
-    return jsonify( {'file': crypt.decrypt(db[file_id_str]) } )
+    file = crypt.decrypt(db[file_id_str])
+    if file == None:
+        abort(404)
+    
+    return make_response( jsonify( {'file': file } ) , 200 )
     
 db = {}
 db_id = 0
