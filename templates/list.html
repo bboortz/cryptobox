@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}cryptobox :: upload{% endblock %}
+
+
+{% block content %}
+<div class="container">
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == 'message' %}
+              <div class="alert alert-warning" role="alert">
+            {% else %}
+              <div class="alert alert-{{ category }}" role="alert">
+            {% endif %}
+              {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
+<div class="jumbotron">
+<h1>Content List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Link</th>
+        <tr>
+    </thead>
+    <tbody>
+        {% for key, value in result.items() %}
+        <tr>
+          <th>{{ key }}</th>
+          <td><a href="{{ url_for('api_get_file') }}/{{ key }}">{{ url_for('api_get_file') }}/{{ key }}</a> </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+</div>
+{%- endblock %}
