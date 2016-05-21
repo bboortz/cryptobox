@@ -79,7 +79,7 @@ class TestApp(object):
         assert_not_equal(rv.status_code, 201)
         print(rv.data)
         
-        data = json.loads( str(rv.data) )
+        data = json.loads( rv.data.decode() )
         assert_equal(data['file'], 'beispiel text 123')
         
         
