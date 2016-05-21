@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}cryptobox :: upload{% endblock %}
+
+
+{% block content %}
+<div class="container">
+{%- with messages = get_flashed_messages(with_categories=True) %}
+{%- if messages %}
+<div class="row">
+<div class="col-md-1">
+{{utils.flashed_messages(messages)}}
+</div>
+</div>
+{%- endif %}
+{%- endwith %}
+<div class="jumbotron">
+<h1>Welcome to cryptobox</h1>
+<p>cryptobox is a free upload service with cryptographig features. 
+<a href="{{ url_for('documentation') }}">Read</a> more about it and <a href="{{ url_for('upload') }}">try</a> it!</p>
+<p>
+<a class="btn btn-lg btn-default" role="button"
+href="https://github.com/bboortz/cryptobox">Show sourcecode</a>
+<a class="btn btn-lg btn-default" role="button"
+href="https://travis-ci.org/bboortz/cryptobox">Show build status</a>
+<a class="btn btn-lg btn-default" role="button"
+href="https://coveralls.io/github/bboortz/cryptobox">Show test coverage</a>
+</p>
+</div>
+{%- endblock %}
