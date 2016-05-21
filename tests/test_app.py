@@ -84,7 +84,7 @@ class TestApp(object):
         json_data = json.dumps(data)
         json_data_length = len(json_data)
         headers.append(('Content-Length', json_data_length))
-        rv = self.test_app.post('/api/file', data, follow_redirects=False)
+        rv = self.test_app.post('/api/file', data=data, follow_redirects=False)
         
         assert_equal(rv.status_code, 201)
         assert_not_equal(rv.status_code, 405)
