@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 {% block title %}cryptobox :: upload{% endblock %}
 
 
@@ -14,16 +15,16 @@
 {%- endif %}
 {%- endwith %}
 <div class="jumbotron">
-<h1>Welcome to cryptobox</h1>
-<p>cryptobox is a free upload service with cryptographig features. 
-<a href="{{ url_for('documentation') }}">Read</a> more about it and <a href="{{ url_for('upload') }}">try</a> it!</p>
-<p>
-<a class="btn btn-lg btn-default" role="button"
-href="https://github.com/bboortz/cryptobox">Show sourcecode</a>
-<a class="btn btn-lg btn-default" role="button"
-href="https://travis-ci.org/bboortz/cryptobox">Show build status</a>
-<a class="btn btn-lg btn-default" role="button"
-href="https://coveralls.io/github/bboortz/cryptobox">Show test coverage</a>
-</p>
+<h1>Upload Content</h1>
+
+<form action="{{ url_for('api_post_file') }}" class="form form-horizontal" method="post"r ole="form">
+    {{ form.hidden_tag() }}
+    {{ wtf.form_errors(form, hiddens="only") }}
+
+    {{ wtf.form_field(form.content) }}
+    {{ wtf.form_field(form.accesskey) }}
+    {{ wtf.form_field(form.submit) }}
+</form>
+
 </div>
 {%- endblock %}
