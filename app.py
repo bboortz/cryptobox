@@ -2,6 +2,7 @@
 
 from flask import Flask
 from flask import jsonify, make_response, request, abort
+from flask import Flask, render_template, url_for
 from lib.appconfig import *
 from lib.crypt import Crypt
 
@@ -13,6 +14,30 @@ crypt = Crypt()
 
 app = Flask(__name__)
 app.config.from_object(appconfig.FLASKCONFIG)
+
+
+
+# Define a route for the default URL, which loads the form
+@app.route('/')
+def home():
+    return render_template('form_submit.html', result=db)
+
+# Define a route for the action of the form, for example '/hello/'
+# We are also defining which type of requests this route is 
+# accepting: POST requests in this case
+@app.route('/submit', methods=['POST'])
+def submit  ():
+    global db_id
+    json_str=request.form['json']
+    json_bytes = json_str.encode()
+    content =  crypt.encrypt(json_bytes)
+    item = { "%s" % db_id:  content }
+    db_id += 1
+    db.update(item)
+    result = {'status': 'success', 'id': str(db_id-1) }
+    
+    return render_template('form_action.html', json=result)
+
 
 
 @app.route('/alive', methods=['GET'])

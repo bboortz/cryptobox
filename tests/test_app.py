@@ -27,7 +27,7 @@ class TestApp(object):
 
     def test_get_slash(self):
         rv = self.test_app.get('/')
-        assert_equal(rv.status_code, 404)
+        assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
 
     def test_get_alive(self):
@@ -41,6 +41,11 @@ class TestApp(object):
         assert_not_equal(rv.status_code, 201)
         
     def test_post_api(self):
+        rv = self.test_app.post('/api')
+        assert_equal(rv.status_code, 405)
+        assert_not_equal(rv.status_code, 201)
+        
+    def test_post_api_api(self):
         rv = self.test_app.post('/api/api')
         assert_equal(rv.status_code, 404)
         assert_not_equal(rv.status_code, 201)
