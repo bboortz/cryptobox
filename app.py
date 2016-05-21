@@ -2,7 +2,8 @@
 
 from flask import Flask
 from flask import jsonify, make_response, request, abort
-from flask import Flask, render_template, url_for
+from flask import render_template, url_for
+from flask_bootstrap import Bootstrap
 from lib.appconfig import *
 from lib.crypt import Crypt
 
@@ -14,13 +15,31 @@ crypt = Crypt()
 
 app = Flask(__name__)
 app.config.from_object(appconfig.FLASKCONFIG)
+Bootstrap(app)
 
 
 
 # Define a route for the default URL, which loads the form
 @app.route('/')
 def home():
-    return render_template('form_submit.html', result=db)
+    return render_template('home.html', result=db)
+
+# Define a route for the default URL, which loads the form
+@app.route('/upload')
+def upload():
+    return render_template('upload.html', result=db)
+    
+# Define a route for the default URL, which loads the form
+@app.route('/list')
+def list():
+    return render_template('list.html', result=db)
+
+# Define a route for the default URL, which loads the form
+@app.route('/documentation')
+def documentation():
+    return render_template('documentation.html', result=db)
+
+
 
 # Define a route for the action of the form, for example '/hello/'
 # We are also defining which type of requests this route is 

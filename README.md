@@ -2,7 +2,7 @@
 <a href='https://travis-ci.org/sebdah/git-pylint-commit-hook'><img src='https://secure.travis-ci.org/bboortz/cryptobox.png?branch=master'></a>
 [![Coverage Status](https://coveralls.io/repos/github/bboortz/cryptobox/badge.svg?branch=master)](https://coveralls.io/github/bboortz/cryptobox?branch=master)
 
-encrypted dropbox like service to go. 
+cryptobox is a free upload service with cryptographig features. 
 
 # Basic Ideas
 * web application written in python
