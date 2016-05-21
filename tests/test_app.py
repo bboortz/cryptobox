@@ -30,6 +30,21 @@ class TestApp(object):
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         
+    def test_get_upload(self):
+        rv = self.test_app.get('/upload')
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
+        
+    def test_get_list(self):
+        rv = self.test_app.get('/list')
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
+        
+    def test_get_documentation(self):
+        rv = self.test_app.get('/documentation')
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
+        
     def test_get_alive(self):
         rv = self.test_app.get('/alive')
         assert_equal(rv.status_code, 200)
