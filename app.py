@@ -10,6 +10,7 @@ from lib.wtfforms import *
 from lib.flaskhelper import *
 from lib.jsonhelper import dict_to_bytes
 from lib.crypt import Crypt
+import simplejson as json
 
 
 
@@ -76,8 +77,21 @@ def api_get_file_id(file_id):
     if file == None  or  file == ""  or  file.__sizeof__() == 0:
         abort(404)
     
-    #return make_response( json.dumps( {'file': file } ) ) , 200 )
-    return make_response( jsonify( {'file': file } ) , 200 )
+    
+    #print file
+    #return make_response( jsonify( {'file': file } ) , 200 )
+    #print file
+    try:
+        file_dict = json.loads(file)
+        return make_response( jsonify( {'file': file_dict } ) , 200 )
+    except:
+        return make_response( jsonify( {'file': file } ) , 200 )
+        
+    #print file_dict
+    #print file_dict['key']
+    #json_dict = {'file': file }
+    #return make_response( json.dumps( file_dict ) , 200 )
+    #return make_response( jsonify( {'file': file_dict } ) , 200 )
     
 db = {}
 db_id = 0
