@@ -74,9 +74,13 @@ class TestApp(object):
         assert '"id": "0"' in str(rv.data)
         assert '"status": "success"' in str(rv.data)
         
-        #data = dict(name="Jesse")
-        #rv = self.test_app.post('/api/file', data, follow_redirects=False)
-    
+        rv = self.test_app.get('/api/file/0')
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
+        data = json.loads(rv.data)
+        assert_equal(data['file'], 'beispiel text 123')
+        
+        
     def test_post_file0_text_wrong_form(self):
         
         data = dict(wrongkey='data1')
