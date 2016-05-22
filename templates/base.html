@@ -3,6 +3,11 @@
 {% block html_attribs %} lang="en"{% endblock %}
 
 
+{% block metas %}
+<meta id="api_url" data-name="{{ api_url }}">
+{% endblock %}
+
+
 {% block navbar %}
     {{ nav }}
 {% endblock navbar %}

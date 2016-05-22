@@ -23,7 +23,7 @@
 <div class="jumbotron">
 <h1>Upload Content</h1>
 
-<form action="{{ url_for('api_post_file') }}" class="form form-horizontal" method="post"r ole="form">
+<form action="{{ api_url }}/api/file" class="form form-horizontal" method="post"r ole="form">
     {{ form.hidden_tag() }}
     {{ wtf.form_errors(form, hiddens="only") }}
 

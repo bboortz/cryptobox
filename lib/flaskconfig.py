@@ -23,6 +23,7 @@ class ProductionFlaskConfig(FlaskConfig):
 
 class DevelopmentFlaskConfig(FlaskConfig):
     DEBUG = True
+    TESTING = True
     SECRET_KEY = os.getenv('FLASK_SECRET_KEY', 'secret_dev_key_24239834958495')
 
 class TestingFlaskConfig(FlaskConfig):
