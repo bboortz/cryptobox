@@ -14,7 +14,7 @@ include_module_path("api")
 from lib.appconfig import *
 from api.blueprint_api import blueprint as blueprint_api
 from frontend.blueprint_frontend import blueprint as blueprint_frontend
-from flask import Flask, Blueprint
+from flask import Flask
 from flask import jsonify, make_response
 from flask_bootstrap import Bootstrap
 
