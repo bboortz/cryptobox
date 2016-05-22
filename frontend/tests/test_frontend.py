@@ -60,3 +60,13 @@ class TestApp(object):
         rv = self.test_app.get('/alive')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
+        
+    def test_post_alive_405(self):
+        rv = self.test_app.post('/alive')
+        assert_equal(rv.status_code, 405)
+        assert_not_equal(rv.status_code, 201)
+        
+    def test_get_list_404(self):
+        rv = self.test_app.get('/list/404')
+        assert_equal(rv.status_code, 404)
+        assert_not_equal(rv.status_code, 201)
