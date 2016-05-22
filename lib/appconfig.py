@@ -11,7 +11,10 @@ class AppConfig(object):
     PORT = int( os.getenv('PORT', 8080) )
     PYTHONVERSION = platform.python_version()
     FLASKCONFIG = ProductionFlaskConfig
+    #HOSTNAME = os.getenv('C9_HOSTNAME', 'cryptobox-bboortz.c9users.io')
     API_URL = os.getenv('API_URL', 'https://cryptobox-bboortz.c9users.io:8081')
+    #https://cryptobox.herokuapp.com/
+    
     
     
     @staticmethod
@@ -54,6 +57,7 @@ class AppConfig(object):
 class ProductionAppConfig(AppConfig):
     ENV = "PROD"
     FLASKCONFIG = ProductionFlaskConfig
+    API_URL = os.getenv('API_URL', 'https://cryptobox.herokuapp.com:8081')
 
 class DevelopmentAppConfig(AppConfig):
     ENV = "DEV"

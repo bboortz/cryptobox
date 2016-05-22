@@ -1,4 +1,4 @@
-
+import os
 from lib.appconfig import *
 from lib.flaskhelper import *
 from lib.jsonhelper import dict_to_bytes
@@ -35,6 +35,11 @@ def api():
 @crossdomain(origin='*')
 def api_get_config():
     return jsonify( appconfig.config_to_json() )
+    
+@blueprint.route('/api/env', methods=['GET'])
+@crossdomain(origin='*')
+def api_get_env():
+    return jsonify( os.environ )
 
 @blueprint.route('/api/file', methods=['GET'])
 @crossdomain(origin='*')
