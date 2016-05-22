@@ -7,16 +7,14 @@ def include_module_path(path):
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],path)))
     if cmd_subfolder not in sys.path:
         sys.path.insert(0, cmd_subfolder)
-include_module_path("api")
+include_module_path("..")
 
 
 
 from lib.appconfig import *
-from api.blueprint_api import blueprint as blueprint_api
-from frontend.blueprint_frontend import blueprint as blueprint_frontend
+from blueprint_api import blueprint as blueprint_api
 from flask import Flask
 from flask import jsonify, make_response
-from flask_bootstrap import Bootstrap
 
 
 
@@ -24,8 +22,6 @@ appconfig = AppConfig.create_instance()
 app = Flask(__name__)
 app.config.from_object(appconfig.FLASKCONFIG)
 app.register_blueprint(blueprint_api)
-app.register_blueprint(blueprint_frontend)
-Bootstrap(app)
 
 
 

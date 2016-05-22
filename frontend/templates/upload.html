@@ -21,26 +21,16 @@
 
 
 <div class="jumbotron">
-<h1>Content List</h1>
+<h1>Upload Content</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Link</th>
-        <tr>
-    </thead>
-    <tbody>
-        {% for key, value in result.items() %}
-        <tr>
-          <th>{{ key }}</th>
-          <td><a href="{{ url_for('api_get_file') }}/{{ key }}">{{ url_for('api_get_file') }}/{{ key }}</a> </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<form action="{{ api_url }}/api/file" class="form form-horizontal" method="post"r ole="form">
+    {{ form.hidden_tag() }}
+    {{ wtf.form_errors(form, hiddens="only") }}
 
-
+    {{ wtf.form_field(form.content) }}
+    {{ wtf.form_field(form.accesskey) }}
+    {{ wtf.form_field(form.submit) }}
+</form>
 
 </div>
 {%- endblock %}
