@@ -2,6 +2,11 @@ from datetime import timedelta
 from flask import make_response, request, current_app
 from functools import update_wrapper
 
+try:
+  basestring
+except NameError:
+  basestring = str
+
 
 def is_mimetype_json():
     if request.headers['Content-Type'] == 'application/json':

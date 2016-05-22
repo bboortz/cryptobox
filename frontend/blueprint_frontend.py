@@ -3,8 +3,8 @@ from lib.appconfig import *
 from lib.flaskhelper import *
 from wtfforms import *
 from flask import Blueprint
-from flask import jsonify, make_response, request, abort
-from flask import render_template, url_for, flash, redirect, Markup
+from flask import jsonify, make_response, request
+from flask import render_template, url_for, flash
 from flask_wtf import Form
 import simplejson as json
 
