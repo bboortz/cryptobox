@@ -15,7 +15,7 @@ class AppConfig(object):
     
     API_URL = "https://localhost:8081"
     if 'DYNO' in os.environ:
-        API_PORT = os.getenv('API_PORT', 8080)
+        API_PORT = os.getenv('API_PORT', 443)
         API_URL = os.getenv('API_URL', "https://cryptobox.herokuapp.com:%s" % API_PORT)
     elif 'C9_HOSTNAME' in os.environ:
         HOSTNAME = os.getenv('C9_HOSTNAME', 'cryptobox-bboortz.c9users.io')
