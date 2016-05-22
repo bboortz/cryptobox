@@ -5,15 +5,19 @@ from lib.flaskconfig import ProductionFlaskConfig, DevelopmentFlaskConfig, Testi
 
 class AppConfig(object):
     APPNAME = "cryptobox"
-    APPVERSION = "0.1.5"
+    APPVERSION = "0.1.6"
     ENV = "PROD"
     IP = os.getenv('IP', '0.0.0.0')
     PORT = int( os.getenv('PORT', 8080) )
     PYTHONVERSION = platform.python_version()
     FLASKCONFIG = ProductionFlaskConfig
     #HOSTNAME = os.getenv('C9_HOSTNAME', 'cryptobox-bboortz.c9users.io')
-    API_URL = os.getenv('API_URL', 'https://cryptobox-bboortz.c9users.io:8081')
-    #https://cryptobox.herokuapp.com/
+    
+    API_URL = "https://localhost:8081"
+    if 'DYNO' in os.environ:
+        API_URL = os.getenv('API_URL', 'https://cryptobox.herokuapp.com')
+    elif 'C9_HOSTNAME' in os.environ:
+        API_URL = os.getenv('API_URL', 'https://cryptobox-bboortz.c9users.io:8081')
     
     
     
@@ -57,7 +61,6 @@ class AppConfig(object):
 class ProductionAppConfig(AppConfig):
     ENV = "PROD"
     FLASKCONFIG = ProductionFlaskConfig
-    API_URL = os.getenv('API_URL', 'https://cryptobox.herokuapp.com:8081')
 
 class DevelopmentAppConfig(AppConfig):
     ENV = "DEV"

@@ -35,11 +35,12 @@ def api():
 @crossdomain(origin='*')
 def api_get_config():
     return jsonify( appconfig.config_to_json() )
-    
-@blueprint.route('/api/env', methods=['GET'])
-@crossdomain(origin='*')
-def api_get_env():
-    return jsonify( os.environ )
+
+if appconfig.ENV == 'DEV':
+    @blueprint.route('/api/env', methods=['GET'])
+    @crossdomain(origin='*')
+    def api_get_env():
+        return jsonify( os.environ )
 
 @blueprint.route('/api/file', methods=['GET'])
 @crossdomain(origin='*')

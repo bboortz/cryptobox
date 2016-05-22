@@ -10,7 +10,7 @@ include_module_path("..")
 
 
 
-from app_api import app
+from app_api import app, appconfig
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
 import json
@@ -64,6 +64,14 @@ class TestApp(object):
     def test_get_config(self):
         rv = self.test_app.get('/api/config')
         assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
+        
+    def test_get_env(self):
+        rv = self.test_app.get('/api/env')
+        if appconfig.ENV == 'DEV':
+            assert_equal(rv.status_code, 200)
+        else:
+            assert_equal(rv.status_code, 404)
         assert_not_equal(rv.status_code, 201)
 
     def test_get_file(self):
