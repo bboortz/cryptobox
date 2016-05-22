@@ -10,8 +10,7 @@ include_module_path("..")
 
 
 
-
-from app_frontend import app
+from testapp import app
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
 
@@ -36,43 +35,39 @@ class TestApp(object):
     def teardown(self):
         """This method is run once after _each_ test method is executed"""
 
-    def test_get_slash(self):
-        rv = self.test_app.get('/')
+    def test_get_origin_star(self):
+        rv = self.test_app.get('/get_origin_star')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         
-    def test_get_upload(self):
-        rv = self.test_app.get('/upload')
+    def test_get_origin_star2(self):
+        rv = self.test_app.get('/get_origin_star2')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         
-    def test_get_list(self):
-        rv = self.test_app.get('/list')
+    def test_get_origin_star3(self):
+        rv = self.test_app.get('/get_origin_star3')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         
-    def test_get_documentation(self):
-        rv = self.test_app.get('/documentation')
+    def test_options_automatic_options(self):
+        rv = self.test_app.options('/options_automatic_options')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         
-    def test_get_alive(self):
-        rv = self.test_app.get('/alive')
+    def test_options_not_automatic_options(self):
+        rv = self.test_app.options('/options_not_automatic_options')
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 201)
+   
+    def test_get_origin_api_url(self):
+        rv = self.test_app.get('/get_origin_api_url')
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         
-    def test_post_alive_405(self):
-        rv = self.test_app.post('/alive')
-        assert_equal(rv.status_code, 405)
-        assert_not_equal(rv.status_code, 201)
+    def test_post_origin_api_url(self):
+        data = dict(content='beispiel text 123')
+        rv = self.test_app.post('/post_origin_api_url', data=data , follow_redirects=False)
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 405)
         
-    def test_get_list_404(self):
-        rv = self.test_app.get('/list/404')
-        assert_equal(rv.status_code, 404)
-        assert_not_equal(rv.status_code, 201)
-        
-    def test_unknown_function(self):
-        rv = self.test_app.delete('/alive', follow_redirects=False)
-        assert_equal(rv.status_code, 405)
-        assert_not_equal(rv.status_code, 200)
-

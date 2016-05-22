@@ -4,7 +4,7 @@ from lib.flaskhelper import *
 from wtfforms import *
 from flask import Blueprint
 from flask import jsonify, make_response, request
-from flask import render_template, flash
+from flask import render_template
 
 
 
