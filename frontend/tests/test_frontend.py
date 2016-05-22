@@ -70,3 +70,9 @@ class TestApp(object):
         rv = self.test_app.get('/list/404')
         assert_equal(rv.status_code, 404)
         assert_not_equal(rv.status_code, 201)
+        
+    def test_unknown_function(self):
+        rv = self.test_app.delete('/alive', follow_redirects=False)
+        assert_equal(rv.status_code, 405)
+        assert_not_equal(rv.status_code, 200)
+

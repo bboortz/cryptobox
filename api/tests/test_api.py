@@ -154,20 +154,9 @@ class TestApp(object):
         assert_equal(rv.status_code, 400)
         assert_not_equal(rv.status_code, 405)
        
-        
     def test_unknown_function(self):
         rv = self.test_app.delete('/api/file/0', follow_redirects=False)
         assert_equal(rv.status_code, 405)
         assert_not_equal(rv.status_code, 200)
 
-
-
-#    def test_post_none_file(self):
-#        json = None
-#        rv = self.test_app.post('/api/file', data=None, follow_redirects=False)
-#        rv = self.test_app.post('/api/file', follow_redirects=False)
-#        assert_equal(rv.status_code, 400)
-#        assert_not_equal(rv.status_code, 401)
-        
-
-        
+ 
