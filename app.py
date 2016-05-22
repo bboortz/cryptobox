@@ -43,7 +43,7 @@ def list():
     return render_template('list.html', result=db)
 
 # Define a route for the default URL, which loads the form
-@app.route('/documentation')
+@app.route('/documentation', methods=['GET'])
 def documentation():
     return render_template('documentation.html')
 
