@@ -11,13 +11,16 @@ class AppConfig(object):
     PORT = int( os.getenv('PORT', 8080) )
     PYTHONVERSION = platform.python_version()
     FLASKCONFIG = ProductionFlaskConfig
-    #HOSTNAME = os.getenv('C9_HOSTNAME', 'cryptobox-bboortz.c9users.io')
+    
     
     API_URL = "https://localhost:8081"
     if 'DYNO' in os.environ:
-        API_URL = os.getenv('API_URL', 'https://cryptobox.herokuapp.com')
+        API_PORT = os.getenv('API_PORT', 8080)
+        API_URL = os.getenv('API_URL', "https://cryptobox.herokuapp.com:%s" % API_PORT)
     elif 'C9_HOSTNAME' in os.environ:
-        API_URL = os.getenv('API_URL', 'https://cryptobox-bboortz.c9users.io:8081')
+        HOSTNAME = os.getenv('C9_HOSTNAME', 'cryptobox-bboortz.c9users.io')
+        API_PORT = os.getenv('API_PORT', 8080)
+        API_URL = os.getenv('API_URL', "https://%s:%s" % (HOSTNAME, API_PORT) )
     
     
     
