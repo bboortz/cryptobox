@@ -1,7 +1,7 @@
 # cryptobox
 <a href='https://travis-ci.org/sebdah/git-pylint-commit-hook'><img src='https://secure.travis-ci.org/bboortz/cryptobox.png?branch=master'></a>
 [![Coverage Status](https://coveralls.io/repos/github/bboortz/cryptobox/badge.svg?branch=master)](https://coveralls.io/github/bboortz/cryptobox?branch=master)
-[![Codacy Code Quality](https://www.codacy.com/project/badge/25cb5d1410c7497cb057d887d1f3ea23)]
+[![Codacy Code Quality](https://www.codacy.com/project/badge/25cb5d1410c7497cb057d887d1f3ea23)](https://www.codacy.com/app/benjamin-boortz/cryptobox/dashboard)
 
 cryptobox is a free upload service with cryptographig features. 
 
