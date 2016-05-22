@@ -3,7 +3,7 @@
 export ENV=DEV
 
 export PORT=8081
-./app_api.py &
+./api/app_api.py &
 
 export PORT=8080
-./app_frontend.py
+./frontend/app_frontend.py
