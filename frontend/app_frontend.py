@@ -27,9 +27,9 @@ Bootstrap(app)
 
 
 
-@app.errorhandler(400)
-def bad_request(error):
-    return make_response(jsonify({'error': 'Bad Request'}), 400)
+#@app.errorhandler(400)
+#def bad_request(error):
+#    return make_response(jsonify({'error': 'Bad Request'}), 400)
 
 @app.errorhandler(404)
 def not_found(error):
@@ -39,9 +39,6 @@ def not_found(error):
 def method_not_allowed(error):
     return make_response(jsonify({'error': 'Method Not Allowed'}), 405)
 
-@app.errorhandler(500)
-def internal_error(error):
-    return make_response(jsonify({'error': 'Unexpected Server Error'}), 500)
 
 
 if __name__ == '__main__':
