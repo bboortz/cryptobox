@@ -12,6 +12,7 @@ include_module_path("..")
 
 
 from lib.appconfig import *
+from lib.blueprint_base import blueprint as blueprint_base
 from blueprint_api import blueprint as blueprint_api
 from flask import Flask
 from flask import jsonify, make_response
@@ -21,21 +22,8 @@ from flask import jsonify, make_response
 appconfig = AppConfig.create_instance()
 app = Flask(__name__)
 app.config.from_object(appconfig.FLASKCONFIG)
+app.register_blueprint(blueprint_base)
 app.register_blueprint(blueprint_api)
-
-
-
-@app.errorhandler(400)
-def bad_request(error):
-    return make_response(jsonify({'error': 'Bad Request'}), 400)
-
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
-    
-@app.errorhandler(405)
-def method_not_allowed(error):
-    return make_response(jsonify({'error': 'Method Not Allowed'}), 405)
 
 
 
