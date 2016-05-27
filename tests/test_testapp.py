@@ -71,3 +71,18 @@ class TestApp(object):
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 405)
         
+    def test_get_origin_star_405(self):
+        rv = self.test_app.get('/get_origin_star_404')
+        assert_equal(rv.status_code, 404)
+        assert_not_equal(rv.status_code, 201)    
+    
+    def test_unknown_function(self):
+        rv = self.test_app.delete('/post_origin_api_url', follow_redirects=False)
+        assert_equal(rv.status_code, 405)
+        assert_not_equal(rv.status_code, 200)
+        
+    def test_post_origin_api_url_wrong_form(self):
+        data = dict(wrongkey='data1')
+        rv = self.test_app.post('/post_origin_api_url', data=data , follow_redirects=False)
+        assert_equal(rv.status_code, 400)
+        assert_not_equal(rv.status_code, 405)

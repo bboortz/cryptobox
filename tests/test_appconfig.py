@@ -57,3 +57,28 @@ class TestAppConfig(object):
         assert_equal(json['ENV'], "DEV")
         assert_not_equal(json['ENV'], "PROD")
         
+    def test_config_to_json_dyno(self):
+        os.environ['DYNO'] = "web"
+        appconfig = AppConfig.create_instance("DEV")
+        json = appconfig.config_to_json()
+        assert_equal(json['ENV'], "DEV")
+        assert_not_equal(json['ENV'], "PROD")
+        
+    def test_config_to_json_heroku(self):
+        if 'C9_HOSTNAME' in os.environ:
+            del os.environ['C9_HOSTNAME']
+        os.environ['DYNO'] = "web"
+        appconfig = AppConfig.create_instance("DEV")
+        json = appconfig.config_to_json()
+        assert_equal(json['ENV'], "DEV")
+        assert_not_equal(json['ENV'], "PROD")
+        
+    def test_config_to_json_c9(self):
+        if 'DYNO' in os.environ:
+            del os.environ['DYNO']
+        os.environ['C9_HOSTNAME'] = 'cryptobox-bboortz.c9users.io'
+        appconfig = AppConfig.create_instance("DEV")
+        json = appconfig.config_to_json()
+        assert_equal(json['ENV'], "DEV")
+        assert_not_equal(json['ENV'], "PROD")
+        
