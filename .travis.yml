@@ -9,7 +9,7 @@ env:
 - ENV=DEV
 - ENV=PROD
 script: 
-- nosetests --with-coverage --cover-tests -v tests api frontend
+- nosetests --with-coverage --cover-tests -v --process-timeout=1 tests api frontend
 after_success:
 - coveralls
 matrix:

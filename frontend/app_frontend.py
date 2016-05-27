@@ -15,7 +15,6 @@ from lib.appconfig import *
 from lib.blueprint_base import blueprint as blueprint_base
 from blueprint_frontend import blueprint as blueprint_frontend
 from flask import Flask
-from flask import jsonify, make_response
 from flask_bootstrap import Bootstrap
 
 
