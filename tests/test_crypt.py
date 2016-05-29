@@ -1,5 +1,6 @@
 
 import base64
+from lib.pythonversionhelper import isinstance_of_string
 from lib.crypt import Crypt, PassCrypt, MultiCrypt
 from cryptography.fernet import InvalidToken
 from nose.tools import assert_equal
@@ -35,8 +36,8 @@ class TestCrypt(object):
         secret_msg = b"test message. foobar test. blub."
         key = b"testkey"
         token = self.crypt.encrypt(secret_msg)
-        assert_equal(isinstance(token, basestring), True)
-        assert_not_equal(isinstance(token, basestring), False)
+        assert_equal(isinstance_of_string(token), True)
+        assert_not_equal(isinstance_of_string(token), False)
 
     def test_crypt_encrypt_and_decrypt(self):
         secret_msg = b"test message. foobar test. blub."
@@ -64,10 +65,10 @@ class TestCrypt(object):
         secret_msg = b"test message. foobar test. blub."
         password = b"testkey"
         token, key = self.passcrypt.encrypt(secret_msg, password)
-        assert_equal(isinstance(token, basestring), True)
-        assert_not_equal(isinstance(token, basestring), False)
-        assert_equal(isinstance(key, basestring), True)
-        assert_not_equal(isinstance(key, basestring), False)
+        assert_equal(isinstance_of_string(token), True)
+        assert_not_equal(isinstance_of_string(token), False)
+        assert_equal(isinstance_of_string(key), True)
+        assert_not_equal(isinstance_of_string(token), False)
 
     def test_passcrypt_encrypt_and_decrypt(self):
         secret_msg = b"test message. foobar test. blub."
@@ -125,12 +126,12 @@ class TestCrypt(object):
         secret_msg = b"test message. foobar test. blub."
         password = b"testkey"
         token, key1, key2 = self.multicrypt.encrypt(secret_msg, password)
-        assert_equal(isinstance(token, basestring), True)
-        assert_not_equal(isinstance(token, basestring), False)
-        assert_equal(isinstance(key1, basestring), True)
-        assert_not_equal(isinstance(key1, basestring), False)
-        assert_equal(isinstance(key2, basestring), True)
-        assert_not_equal(isinstance(key2, basestring), False)
+        assert_equal(isinstance_of_string(token), True)
+        assert_not_equal(isinstance_of_string(token), False)
+        assert_equal(isinstance_of_string(key1), True)
+        assert_not_equal(isinstance_of_string(key1), False)
+        assert_equal(isinstance_of_string(key2), True)
+        assert_not_equal(isinstance_of_string(key2), False)
 
     def test_multicrypt_encrypt_and_decrypt(self):
         secret_msg = b"test message. foobar test. blub."

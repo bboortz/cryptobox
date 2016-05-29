@@ -9,7 +9,7 @@ def include_module_path(path):
 include_module_path("..")
 
 
-
+from lib.pythonversionhelper import isinstance_of_string
 from app_api import app, appconfig
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
@@ -110,8 +110,8 @@ class TestApp(object):
         
         data = json.loads( rv.data.decode() )
         cryptkey = data['cryptkey']
-        assert_not_equal(isinstance(cryptkey, basestring), False)
-        assert_equal(isinstance(cryptkey, basestring), True)
+        assert_equal(isinstance_of_string(cryptkey), True)
+        assert_not_equal(isinstance_of_string(cryptkey), False)
         assert_not_equal(cryptkey, "")
         
         headers = [('cryptkey', cryptkey)]
@@ -158,8 +158,8 @@ class TestApp(object):
         
         data = json.loads( rv.data.decode() )
         cryptkey = data['cryptkey']
-        assert_not_equal(isinstance(cryptkey, basestring), False)
-        assert_equal(isinstance(cryptkey, basestring), True)
+        assert_equal(isinstance_of_string(cryptkey), True)
+        assert_not_equal(isinstance_of_string(cryptkey), False)
         assert_not_equal(cryptkey, "")
         
         headers = [('Content-Type', 'application/json'), ('cryptkey', cryptkey)]
