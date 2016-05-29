@@ -10,7 +10,7 @@ class AppLogger:
     
         # set formatter
         handler = logging.StreamHandler()
-        formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+        formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s - %(message)s')
         handler.setFormatter(formatter)
         self.log.addHandler(handler)
         
@@ -30,7 +30,7 @@ class AppLogger:
         return mod.__name__
 
     @staticmethod
-    def create_instance(module=None, appconfig=AppConfig().create_instance() ):
+    def create_instance(module=None, appconfig=AppConfig.create_instance() ):
         if module == None:
             module = AppLogger.caller_name()
         result = AppLogger(module, appconfig)
