@@ -1,8 +1,8 @@
 
 
 from lib.applogger import AppLogger
-from lib.jsonhelper import *
-from lib.pythonversionhelper import *
+from lib.jsonhelper import dict_to_json, json_to_dict, os_environ_to_dict
+from lib.pythonversionhelper import isinstance_of_string
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
 
@@ -66,3 +66,7 @@ class TestJsonHelper(object):
         LOGGER.info("data_dict type: %s" %type(data_dict))
         assert_equal( isinstance(env_dict, dict), True)
         assert_equal( isinstance(data_dict, dict), True)
+        assert_not_equal( isinstance_of_string(env_dict), True)
+        assert_not_equal( isinstance_of_string(data_dict), True)
+        assert_equal( isinstance_of_string(name), True)
+        assert_equal( isinstance_of_string(home), True)

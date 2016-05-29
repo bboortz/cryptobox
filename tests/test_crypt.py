@@ -1,5 +1,6 @@
 
 import base64
+import binascii
 from lib.pythonversionhelper import str_to_bytes, bytes_to_str
 from lib.crypt import Crypt, PassCrypt, MultiCrypt
 from cryptography.fernet import InvalidToken
@@ -109,7 +110,6 @@ class TestCrypt(object):
         secret_msg = b"test message. foobar test. blub."
         password = b"testkey"
         token, key = self.passcrypt.encrypt(secret_msg, password)
-        token = self.crypt.encrypt(secret_msg)
         token_str = bytes_to_str(token)
         token_str = "%s%s" % (token_str, 1)
         token = str_to_bytes(token_str)
@@ -117,12 +117,21 @@ class TestCrypt(object):
         assert_not_equal(secret_msg, new_msg)
 
     @raises(InvalidToken)
-    def test_passcrypt_encrypt_and_decrypt_invalidtoken2(self):
+    def test_passcrypt_encrypt_and_decrypt_binascii_error(self):
         secret_msg = b"test message. foobar test. blub."
         password = b"testkey"
         token, key = self.passcrypt.encrypt(secret_msg, password)
-        new_msg = self.passcrypt.decrypt(token, b'pakM9rPp1yFHrLN3K3zb0Z0oKoOc_aRYcbOTH1KO3yo=')
-        assert_not_equal(secret_msg, new_msg)
+        
+        key_str = bytes_to_str(key)
+        key_str = "%s%s" % (key_str,1)
+        key_str = key_str.upper()
+        key = str_to_bytes(key_str)
+        print(key)
+        
+        new_msg = self.passcrypt.decrypt(token, key)
+        print(secret_msg)
+        print(new_msg)
+        assert_not_equal(bytes_to_str(secret_msg), new_msg)
 
     def test_multicrypt_init(self):
         assert_equal(self.multicrypt.algorithm, "Fernet")
