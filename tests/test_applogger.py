@@ -113,5 +113,13 @@ class TestAppConfig(object):
         assert_equal(currentLogLevel , loglevel)
         assert_not_equal(currentLogLevel , 'CRITICAL')
         
+    def test_logtypes(self):
+        applogger = AppLogger.create_instance()
+        applogger.error("ERROR")
+        applogger.warn("WARNING")
+        applogger.info("INFO")
+        applogger.debug("DEBUG")
+        
+        
     
         
