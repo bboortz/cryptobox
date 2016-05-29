@@ -27,12 +27,12 @@ db_id = 0
 
 @blueprint.route('/alive', methods=['GET'])
 @crossdomain(origin='*')
-def alive():
+def get_alive():
     return jsonify( { 'alive': 'true' } )
 
 @blueprint.route('/api', methods=['GET'])
 @crossdomain(origin='*')
-def api():
+def get_api():
     return jsonify( appconfig.api_to_json() )
 
 @blueprint.route('/api/config', methods=['GET'])
