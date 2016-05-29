@@ -14,9 +14,5 @@ def dict_to_bytes(the_dict):
     
 def os_environ_to_dict():
     env = os.environ
-    python_major_version = int(platform.python_version_tuple()[0])
+    return dict(env)
     
-    if python_major_version > 2:
-        return dict(env)
-    
-    return env
