@@ -18,7 +18,7 @@ from lib.jsonhelper import *
 from lib.flaskhelper import *
 from lib.blueprint_base import blueprint as blueprint_base
 from flask import Flask
-from flask import jsonify
+from flask import abort, jsonify
 
 
 
@@ -63,9 +63,11 @@ def get_origin_api_url():
 @app.route('/post_origin_api_url', methods=['POST'])
 @crossdomain(origin=appconfig.API_URL, methods=['POST'])
 def post_origin_api_url():
-    content_str=request.form['content']
+    content_str=request.form.get('content')
+    
     if content_str == None  or  content_str == ""  or  content_str.__sizeof__() == 0:
         abort(400)
+        
     return jsonify( { 'status': 'green' } )
     
 @app.route('/get_jsonify', methods=['GET'])
