@@ -11,12 +11,12 @@ def isinstance_of_string(obj):
     return isinstance(obj, basestring)
     
     
-def str_to_bytes(str):
+def str_to_bytes(the_str):
     try:
-      return str.encode()
+      return the_str.encode()
     except AttributeError:
-      return bytes(str)
+      return bytes(the_str)
 
-def bytes_to_str(str):
-    return str.decode()
+def bytes_to_str(the_str):
+    return the_str.decode()
 
