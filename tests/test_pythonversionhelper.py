@@ -32,25 +32,35 @@ class TestPythonVersionHelper(object):
         assert_equal( isinstance_of_string(b"asdasdsa"), True)
         
         assert_not_equal( isinstance_of_string(123434), True)
-    
-    def test_str_to_bytes(self):
+        
+        
+    def test_str_to_bytes_default(self):
         str = "this is a test string"
-        ustr = u"this is a test string type unicode"
-        bstr = b"this is a test string type byte"
         str_bytes = str_to_bytes(str)
-        ustr_bytes = str_to_bytes(ustr)
-        bstr_bytes = str_to_bytes(bstr)
         
         self.applogger.warn( " str type: %s" % type(str_bytes) )
-        self.applogger.warn( " ustr type: %s" % type(ustr_bytes) )
-        self.applogger.warn( " bstr type: %s" % type(bstr_bytes) )
         
         
         assert_equal( isinstance_of_string( str ), True)
         assert_equal( isinstance_of_string( str_bytes ), True)
-        assert_equal( isinstance_of_string( ustr ), True)
-        assert_equal( isinstance_of_string( ustr_bytes ), True)
-        assert_equal( isinstance_of_string( bstr ), True)
-        assert_equal( isinstance_of_string( bstr_bytes ), True)
-        
     
+    def test_str_to_bytes_unicode(self):
+        str = u"this is a test string"
+        str_bytes = str_to_bytes(str)
+        
+        self.applogger.warn( " str type: %s" % type(str_bytes) )
+        
+        
+        assert_equal( isinstance_of_string( str ), True)
+        assert_equal( isinstance_of_string( str_bytes ), True)
+        
+        
+    def test_str_to_bytes_bytes(self):
+        str = b"this is a test string"
+        str_bytes = str_to_bytes(str)
+        
+        self.applogger.warn( " str type: %s" % type(str_bytes) )
+        
+        
+        assert_equal( isinstance_of_string( str ), True)
+        assert_equal( isinstance_of_string( str_bytes ), True)
