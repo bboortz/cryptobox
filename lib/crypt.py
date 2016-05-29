@@ -1,5 +1,6 @@
 import os
 import base64
+from lib.pythonversionhelper import isinstance_of_string, str_to_bytes
 from cryptography.fernet import Fernet, MultiFernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -25,6 +26,9 @@ class PassCrypt:
     
     @classmethod
     def convertPassToKey(cls, password):
+        if isinstance_of_string(password):
+            password = str_to_bytes(password)
+        
         salt = os.urandom(16)
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
@@ -33,10 +37,13 @@ class PassCrypt:
             iterations=100000,
             backend=default_backend()
         )
-        key = base64.urlsafe_b64encode(kdf.derive(password.encode()))
+        key = base64.urlsafe_b64encode(kdf.derive(password))
         return key
     
     def encrypt(self, data, password):
+        if isinstance_of_string(data):
+            data = str_to_bytes(data)
+            
         key =  PassCrypt.convertPassToKey(password)
         f = Fernet(key)
         return (f.encrypt(data), key)

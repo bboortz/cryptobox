@@ -11,3 +11,10 @@ except NameError:
 
 def isinstance_of_string(obj):
     return isinstance(obj, basestring)
+    
+    
+def str_to_bytes(str):
+    try:
+      return str.encode()
+    except:
+      return str

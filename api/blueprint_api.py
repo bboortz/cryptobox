@@ -107,7 +107,7 @@ def api_post_file():
         content_str=request.form['content']
         if content_str == None  or  content_str == ""  or  content_str.__sizeof__() == 0:
             abort(400)
-        content_bytes = content_str.encode()
+        content_bytes = content_str
         
         content, cryptkey =  crypt.encrypt(content_bytes, cryptpass_str)
         crypt2 = PassCrypt()
