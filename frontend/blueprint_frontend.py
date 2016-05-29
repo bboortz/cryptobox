@@ -56,7 +56,6 @@ def get_uploadresult():
 @crossdomain(origin=appconfig.API_URL)
 def get_accesscontent():
     form = AccessForm()
-    print appconfig.API_URL
     return render_template('accesscontent.html', api_url=appconfig.API_URL, form=form)
 
 # Define a route for the default URL, which loads the form
