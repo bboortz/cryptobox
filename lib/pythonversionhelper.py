@@ -15,18 +15,12 @@ def isinstance_of_string(obj):
     
 def str_to_bytes(str):
     try:
-      #return bytes(str, 'utf-8')
       return str.encode()
-    except TypeError:
-      #return bytes(str)
-      return str.encode('utf-8')
     except AttributeError:
       return bytes(str)
 
 def bytes_to_str(str):
     try:
-      #return bytes(str, 'utf-8')
       return str.decode()
     except TypeError:
-      #return bytes(str)
       return str.decode('utf-8')
