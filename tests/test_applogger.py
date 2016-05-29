@@ -94,8 +94,12 @@ class TestAppConfig(object):
         applogger.warn("if you see this, this testcase probably failed.")
         assert_equal(applogger.log.name, __name__)
         assert_not_equal(applogger.log.name, "applogger")
-        assert_equal(currentLogLevel , 'INFO')
-        assert_not_equal(currentLogLevel , 'DEBUG')
+        
+        loglevel = logging.getLevelName( logging.INFO )
+        if self.currentconfig.ENV != 'PROD':
+            loglevel = logging.getLevelName( logging.DEBUG )
+        assert_equal(currentLogLevel , loglevel)
+        assert_not_equal(currentLogLevel , 'CRITICAL')
     
     def test_create_instance_current_without_name(self):
         applogger = AppLogger.create_instance(appconfig=self.currentconfig)
@@ -103,8 +107,12 @@ class TestAppConfig(object):
         applogger.warn("if you see this, this testcase probably failed.")
         assert_equal(applogger.log.name, __name__)
         assert_not_equal(applogger.log.name, "applogger")
-        assert_equal(currentLogLevel , 'INFO')
-        assert_not_equal(currentLogLevel , 'DEBUG')
+        
+        loglevel = logging.getLevelName( logging.INFO )
+        if self.currentconfig.ENV != 'PROD':
+            loglevel = logging.getLevelName( logging.DEBUG )
+        assert_equal(currentLogLevel , loglevel)
+        assert_not_equal(currentLogLevel , 'CRITICAL')
         
     
         
