@@ -18,9 +18,9 @@ class AccessForm(Form):
     
 class ResultForm(Form):
     
-    def __init__(self, id, url, cryptkey):
-        self.id = HiddenField(id)
-        self.url = HiddenField(url)
-        self.cryptkey = HiddenField(cryptkey)
+    def __init__(self, fid, furl, fcryptkey):
+        self.fid = HiddenField(fid)
+        self.furl = HiddenField(furl)
+        self.fcryptkey = HiddenField(fcryptkey)
         
     submit = SubmitField(u'access content')

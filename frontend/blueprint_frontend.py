@@ -37,19 +37,19 @@ def get_upload():
 def get_uploadresult():
     print(request.form)
     
-    return_url = request.form.get('return_url')
-    url = request.form.get('url')
-    id = request.form.get('id')
-    cryptkey = request.form.get('cryptkey')
+    freturn_url = request.form.get('return_url')
+    furl = request.form.get('url')
+    fid = request.form.get('id')
+    fcryptkey = request.form.get('cryptkey')
     
-    abort_on_zero_string(return_url)
-    abort_on_zero_string(url)
-    abort_on_zero_string(id)
-    abort_on_zero_string(cryptkey)
+    abort_on_zero_string(freturn_url)
+    abort_on_zero_string(furl)
+    abort_on_zero_string(fid)
+    abort_on_zero_string(fcryptkey)
     
-    form = ResultForm(id, url, cryptkey)
+    form = ResultForm(fid, furl, fcryptkey)
     
-    return render_template('uploadresult.html', api_url=appconfig.API_URL, form=form, return_url=return_url, url=url, id=id, cryptkey=cryptkey)
+    return render_template('uploadresult.html', api_url=appconfig.API_URL, form=form, return_url=freturn_url, url=furl, id=fid, cryptkey=fcryptkey)
 
 # Define a route for the default URL, which loads the form
 @blueprint.route('/accesscontent', methods=['GET'])
