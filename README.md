@@ -19,7 +19,7 @@ cryptobox is a free upload service with cryptographig features.
 # DEV / TEST / CICD Links
 * DEV-IDE: https://ide.c9.io/bboortz/cryptobox
 * DEV-TEST: http://cryptobox-bboortz.c9users.io/api
-* CI: https://travis-ci.org/profile/bboortz
+* CI: https://travis-ci.org/bboortz/cryptobox
 * CI-Status: https://api.travis-ci.org/bboortz/cryptobox.png?branch=master
 * Test Coverage: https://coveralls.io/github/bboortz/cryptobox
 * Sourcecode Analysis: https://www.codacy.com/app/benjamin-boortz/cryptobox 
