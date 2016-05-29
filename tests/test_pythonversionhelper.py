@@ -37,11 +37,6 @@ class TestPythonVersionHelper(object):
         str = "this is a test string"
         ustr = u"this is a test string type unicode"
         bstr = b"this is a test string type byte"
-        
-        assert_equal( isinstance_of_string( str ), True)
-        assert_equal( isinstance_of_string( ustr ), True)
-        assert_equal( isinstance_of_string( bstr ), True)
-        
         str_bytes = str_to_bytes(str)
         ustr_bytes = str_to_bytes(ustr)
         bstr_bytes = str_to_bytes(bstr)
@@ -50,16 +45,12 @@ class TestPythonVersionHelper(object):
         self.applogger.warn( " ustr type: %s" % type(ustr_bytes) )
         self.applogger.warn( " bstr type: %s" % type(bstr_bytes) )
         
+        
+        assert_equal( isinstance_of_string( str ), True)
         assert_equal( isinstance_of_string( str_bytes ), True)
+        assert_equal( isinstance_of_string( ustr ), True)
         assert_equal( isinstance_of_string( ustr_bytes ), True)
+        assert_equal( isinstance_of_string( bstr ), True)
         assert_equal( isinstance_of_string( bstr_bytes ), True)
         
-        assert_equal( isinstance(str_bytes, bytes), True)
-        assert_equal( isinstance(bstr_bytes, bytes), True)
-        assert_equal( isinstance(bstr_bytes, bytes), True)
-        
-        
-        
-        
-       
-        
+    
