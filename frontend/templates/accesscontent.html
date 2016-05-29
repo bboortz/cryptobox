@@ -6,65 +6,49 @@
 {% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-
-
 <script>
-
-
-
-
 (function() {
   $("#uploadResult").hide()
 })();
 
+var api_url = $('#api_url').data().name
+console.log(api_url)
 
-var frm = $('#uploadForm');
+
+var frm = $('#accessForm');
 frm.submit(function (event) {
-  var api_url = $('#api_url').data().name
-  var service = api_url +'/api/file';
+  event.preventDefault();
+
+  var id = $("input#id.form-control").val()
+  var accesskey = $("input#accesskey.form-control").val()
+  var cryptkey = $("input#cryptkey.form-control").val()
+  var service = api_url +'/api/file/' + id;
+  console.log(service)
+  console.log(id)
+  console.log(cryptkey)
   
   $.ajax({
-    type: 'post',
+    type: 'get',
     url: service,
-    data: frm.serialize(),
+    headers: { accesskey: accesskey, cryptkey: cryptkey },
     success: function (data) {
-      text = "Upload failed!"
-      if (data.status != 'success') {
-        text = "Upload failed!"  
-      } else {
-        url = "<a href='" + data.url + "'>URL</a>"
-        text = "Upload succeeded! ID = " + data.id +  " CRYPTKEY = " + data.cryptkey
-      }
-      
+      text = "Access succeeded! ID = " + id
       $("#uploadResult").text(text)
       $("#uploadResult").show()
-      
-      
-      var url = "{{ url_for('frontend.get_uploadresult') }}"
-      var return_url = "{{ url_for('frontend.get_upload') }}"
-      var form = $('<form action="' + url + '" method="post">' +
-        '<input type="text" name="return_url" value="' + return_url + '" />' +
-        '<input type="text" name="id" value="' + data.id + '" />' +
-        '<input type="text" name="url" value="' + data.url + '" />' +
-        '<input type="text" name="cryptkey" value="' + data.cryptkey + '" />' +
-        '</form>');
-      $('body').append(form);
-      form.submit();
-
     },
     error: function(msg){
       console.log( "error" );
       console.log( msg.statusCode + " - " + msg.statusText );
-      text = "Upload failed!"  
+      text = "Access failed!"  
       $("#uploadResult").text(text)
       $("#uploadResult").show()
     }
   });
 
-  event.preventDefault();
-  
   
 });
+
+
 
 
 </script>
@@ -93,16 +77,15 @@ frm.submit(function (event) {
 
 
 <div class="jumbotron">
-<h1>Upload Content</h1>
+<h1>Access your content</h1>
 
-
-<form class="form form-horizontal" role="form" id="uploadForm" action="/uploadresult" method="post">
+<form class="form form-horizontal" role="form" id="accessForm" action="/accesscontent" method="post">
     {{ form.hidden_tag() }}
     {{ wtf.form_errors(form, hiddens="only") }}
 
-    {{ wtf.form_field(form.content) }}
+    {{ wtf.form_field(form.id) }}
     {{ wtf.form_field(form.accesskey) }}
-    {{ wtf.form_field(form.cryptpass) }}
+    {{ wtf.form_field(form.cryptkey) }}
     {{ wtf.form_field(form.submit) }}
 </form>
 

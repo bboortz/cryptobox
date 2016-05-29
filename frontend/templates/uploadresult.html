@@ -6,19 +6,32 @@
 {% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-
-
 <script>
-
-
-
-
 (function() {
   $("#uploadResult").hide()
 })();
 
+var api_url = $('#api_url').data().name
+var service = api_url +'/api/file';
 
-var frm = $('#uploadForm');
+$(document).ready(function(){
+  
+  
+  $("#accessContent").click(function(event){
+    event.preventDefault();
+    $.ajax({
+      type: "GET",
+      url: service,
+      headers: { cryptkey: 'lala' },
+      success:function(result){
+        console.log( result );
+        // $("#sharelink").html(result);
+    }});
+  });
+});
+
+
+var frm = $('#accessContent');
 frm.submit(function (event) {
   var api_url = $('#api_url').data().name
   var service = api_url +'/api/file';
@@ -38,33 +51,17 @@ frm.submit(function (event) {
       
       $("#uploadResult").text(text)
       $("#uploadResult").show()
-      
-      
-      var url = "{{ url_for('frontend.get_uploadresult') }}"
-      var return_url = "{{ url_for('frontend.get_upload') }}"
-      var form = $('<form action="' + url + '" method="post">' +
-        '<input type="text" name="return_url" value="' + return_url + '" />' +
-        '<input type="text" name="id" value="' + data.id + '" />' +
-        '<input type="text" name="url" value="' + data.url + '" />' +
-        '<input type="text" name="cryptkey" value="' + data.cryptkey + '" />' +
-        '</form>');
-      $('body').append(form);
-      form.submit();
-
     },
     error: function(msg){
       console.log( "error" );
       console.log( msg.statusCode + " - " + msg.statusText );
-      text = "Upload failed!"  
-      $("#uploadResult").text(text)
-      $("#uploadResult").show()
     }
   });
 
   event.preventDefault();
-  
-  
 });
+
+
 
 
 </script>
@@ -93,17 +90,21 @@ frm.submit(function (event) {
 
 
 <div class="jumbotron">
-<h1>Upload Content</h1>
+<h1>Uploading successful!</h1>
 
+
+<p>View id {{ id }}</p>
+<p>at <a href="{{ url }}">{{ url }}</a></p>
+<p>with cryptkey {{ cryptkey }}</p>
+
+<p>
+  <a class="btn btn-lg btn-default" role="button" 
+  href="{{ return_url }}">back</a>
+  <a id="accessContent" class="btn btn-lg btn-default" role="button" 
+  href="{{ return_url }}">access content</a>
+</p>
 
 <form class="form form-horizontal" role="form" id="uploadForm" action="/uploadresult" method="post">
-    {{ form.hidden_tag() }}
-    {{ wtf.form_errors(form, hiddens="only") }}
-
-    {{ wtf.form_field(form.content) }}
-    {{ wtf.form_field(form.accesskey) }}
-    {{ wtf.form_field(form.cryptpass) }}
-    {{ wtf.form_field(form.submit) }}
 </form>
 
 </div>
