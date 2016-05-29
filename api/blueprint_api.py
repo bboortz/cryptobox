@@ -1,18 +1,23 @@
 import os
 from lib.appconfig import *
+from lib.applogger import AppLogger
 from lib.flaskhelper import *
 from lib.jsonhelper import dict_to_bytes
-from lib.crypt import Crypt
+from lib.crypt import PassCrypt
+from cryptography.fernet import InvalidToken
 from flask import Blueprint
 from flask import jsonify, make_response, request, abort
 from flask import url_for
+from flask import current_app
 import simplejson as json
 
 
 
+
 appconfig = AppConfig.create_instance()
+LOGGER = AppLogger.create_instance(appconfig=appconfig)
 blueprint = Blueprint('api', __name__, template_folder='templates')
-crypt = Crypt()
+crypt = PassCrypt()
 
 
 
@@ -50,11 +55,19 @@ def api_get_file():
 @blueprint.route('/api/file/<int:file_id>', methods=['GET'])
 @crossdomain(origin='*')
 def api_get_file_id(file_id):
+    cryptkey = request.headers.get('cryptkey')
+    if cryptkey == None  or  cryptkey == ""  or  cryptkey.__sizeof__() == 0:
+        abort(400)
+        
     file_id_str = str(file_id)
     if not file_id_str in db:
         abort(404)
     
-    file = crypt.decrypt(db[file_id_str])
+    encoded_cryptkey = cryptkey.encode('UTF-8')
+    try:
+        file = crypt.decrypt(db[file_id_str], encoded_cryptkey)
+    except InvalidToken:
+        abort(404)
     if file == None  or  file == ""  or  file.__sizeof__() == 0:
         abort(404)
     
@@ -69,14 +82,24 @@ def api_get_file_id(file_id):
 def api_post_file():
     global db_id
     item = { "%s" % db_id:  None }
-    #form = UploadForm()
-
+    cryptkey = ""
+    
+    
+    LOGGER.debug( "cryptpass(headers): %s" % request.headers.get('cryptpass') )
+    LOGGER.debug( "cryptpass(form): %s" % request.form.get('cryptpass') )
+    cryptpass_str = request.form.get('cryptpass')
+    if cryptpass_str == None:
+        cryptpass_str = request.headers.get('cryptpass')
+    if cryptpass_str == None  or  cryptpass_str == ""  or  cryptpass_str.__sizeof__() == 0:
+        abort(400)
+    
     if is_mimetype_json():
         json_dict = request.get_json()
         if json_dict == None:
-            abort(400)
+            abort(401)
         json_bytes=dict_to_bytes(json_dict)
-        content = crypt.encrypt(json_bytes)
+        # TODO / FIX ME
+        content, cryptkey = crypt.encrypt(json_bytes, cryptpass_str)
         item = { "%s" % db_id: content }
         
     else:
@@ -84,13 +107,20 @@ def api_post_file():
         if content_str == None  or  content_str == ""  or  content_str.__sizeof__() == 0:
             abort(400)
         content_bytes = content_str.encode()
-        content =  crypt.encrypt(content_bytes)
-        item = { "%s" % db_id:  content }
         
+        content, cryptkey =  crypt.encrypt(content_bytes, cryptpass_str)
+        crypt2 = PassCrypt()
+        content_decrypted = crypt2.decrypt(content, cryptkey)
+        item = { "%s" % db_id:  content }
+    
+    if cryptkey == None  or  cryptkey == "":
+        abort(400)
+    
+    
     new_id = db_id    
     url = "%s/%d" % (url_for('api.api_get_file', _external=True), new_id)
     db_id += 1
     db.update(item)
     
-    return make_response(jsonify({'status': 'success', 'id': str(new_id), 'url': url }), 201)
+    return make_response(jsonify({'status': 'success', 'id': str(new_id), 'cryptkey': cryptkey, 'url': url }), 201)
 

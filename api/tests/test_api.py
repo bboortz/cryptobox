@@ -80,8 +80,15 @@ class TestApp(object):
         assert_not_equal(rv.status_code, 201)
         
     def test_get_file_wrong(self):
-        rv = self.test_app.get('/api/file/1000')
+        cryptkey='TESTKEY'
+        headers = [('cryptkey', cryptkey)]
+        rv = self.test_app.get('/api/file/1000', headers=headers)
         assert_equal(rv.status_code, 404)
+        assert_not_equal(rv.status_code, 200)
+        
+    def test_get_file_without_cryptkey(self):
+        rv = self.test_app.get('/api/file/0')
+        assert_equal(rv.status_code, 400)
         assert_not_equal(rv.status_code, 200)
         
     def test_get_file_alphabetical(self):
@@ -90,21 +97,32 @@ class TestApp(object):
         assert_not_equal(rv.status_code, 200)
         
     def test_post_file0_text(self):
-        data = dict(content='beispiel text 123')
-        rv = self.test_app.post('/api/file', data=data , follow_redirects=False)
-
+        content='beispiel text 123'
+        cryptpass='TESTKEY'
+        headers = [('cryptpass', cryptpass)]
+        data = dict(content=content)
+        rv = self.test_app.post('/api/file', data=data , headers=headers, follow_redirects=False)
+        
         assert_equal(rv.status_code, 201)
         assert_not_equal(rv.status_code, 405)
         assert '"id": "0"' in str(rv.data)
         assert '"status": "success"' in str(rv.data)
         
-        rv = self.test_app.get('/api/file/0')
+        data = json.loads( rv.data.decode() )
+        cryptkey = data['cryptkey']
+        assert_not_equal(isinstance(cryptkey, basestring), False)
+        assert_equal(isinstance(cryptkey, basestring), True)
+        assert_not_equal(cryptkey, "")
+        
+        headers = [('cryptkey', cryptkey)]
+        rv = self.test_app.get("/api/file/0", headers=headers)
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         print(rv.data)
         
         data = json.loads( rv.data.decode() )
         assert_equal(data['file'], 'beispiel text 123')
+        
         
         
     def test_post_file0_text_wrong_form(self):
@@ -125,18 +143,28 @@ class TestApp(object):
         assert_not_equal(rv.status_code, 405)
     
     def test_post_file1_json(self):
-        headers = [('Content-Type', 'application/json')]
+        cryptpass='TESTKEY'
+        headers = [('Content-Type', 'application/json'), ('cryptpass', cryptpass)]
         data = {'name': 'Jessy', 'testcase': 'test_post_file1_and_get'}
         json_data = json.dumps(data)
         json_data_length = len(json_data)
         headers.append(('Content-Length', json_data_length))
-        rv = self.test_app.post('/api/file', data=json_data, content_type = 'application/json', headers=headers, follow_redirects=False)
+        rv = self.test_app.post('/api/file', data=json_data, headers=headers, follow_redirects=False)
+        
         assert_equal(rv.status_code, 201)
         assert_not_equal(rv.status_code, 405)
         assert '"id": "1"' in str(rv.data)
         assert '"status": "success"' in str(rv.data)
         
-        rv = self.test_app.get('/api/file/1', content_type = 'application/json', headers=headers)
+        data = json.loads( rv.data.decode() )
+        cryptkey = data['cryptkey']
+        assert_not_equal(isinstance(cryptkey, basestring), False)
+        assert_equal(isinstance(cryptkey, basestring), True)
+        assert_not_equal(cryptkey, "")
+        
+        headers = [('Content-Type', 'application/json'), ('cryptkey', cryptkey)]
+        rv = self.test_app.get('/api/file/1', headers=headers)
+        
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
         data = json.loads( rv.data.decode() )

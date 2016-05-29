@@ -3,8 +3,105 @@
 {% block title %}cryptobox :: upload{% endblock %}
 
 
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script>
+(function() {
+  $("#uploadResult").hide()
+})();
+
+
+var frm = $('#uploadForm');
+frm.submit(function (event) {
+  var api_url = $('#api_url').data().name
+  var service = api_url +'/api/file';
+  
+  $.ajax({
+    type: 'post',
+    url: service,
+    data: frm.serialize(),
+    success: function (data) {
+      text = "Upload failed!"
+      if (data.status != 'success') {
+        text = "Upload failed!"  
+      } else {
+        url = "<a href='" + data.url + "'>URL</a>"
+        text = "Upload succeeded! ID = " + data.id +  " CRYPTKEY = " + data.cryptkey
+      }
+      
+      $("#uploadResult").text(text)
+      $("#uploadResult").show()
+    },
+    error: function(msg){
+      console.log( "error" );
+      console.log( msg.statusCode + " - " + msg.statusText );
+    }
+  });
+
+  event.preventDefault();
+});
+
+
+
+
+
+// Attach a submit handler to the form
+/*
+$( "#uploadForm" ).submit(function( event ) {
+    var api_url = $('#api_url').data().name
+    var service = api_url +'/api/file';
+    
+
+ 
+    // Stop form from submitting normally
+    event.preventDefault();
+ 
+    // Get some values from elements on the page:
+    var $form = $( this ),
+      term = $form.find( "input[name='s']" ).val(),
+      url = $form.attr( "action" );
+*/
+    /*
+    $.post( service, { name: "John", time: "2pm" })
+    .done(function( data ) {
+      alert( "Data Loaded: " + data );
+    })
+    .fail(function(msg) {
+        console.log( "error" );
+        console.log( msg );
+    })
+    */
+  
+/*  
+    $.ajax({
+      url:url,
+      type:"POST",
+      data: { name: "John", time: "2pm" },
+      contentType:"application/json; charset=utf-8",
+      dataType:"json",
+      headers: { cryptpass: "lala" },
+      success: function(data){
+          alert( "Data Sent: " + data );
+      },
+      error: function(msg){
+        console.log( "error" );
+        console.log( msg.statusCode + " - " + msg.statusText );
+      }
+    })
+});
+
+*/
+</script>
+
+{{super()}}
+{% endblock %}
+
+
 {% block content %}
 <div class="container">
+<span id="uploadResult" class='alert alert-warning' role='alert' ></span>
+
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
@@ -23,12 +120,14 @@
 <div class="jumbotron">
 <h1>Upload Content</h1>
 
-<form action="{{ api_url }}/api/file" class="form form-horizontal" method="post"r ole="form">
+
+<form class="form form-horizontal" role="form" id="uploadForm">
     {{ form.hidden_tag() }}
     {{ wtf.form_errors(form, hiddens="only") }}
 
     {{ wtf.form_field(form.content) }}
     {{ wtf.form_field(form.accesskey) }}
+    {{ wtf.form_field(form.cryptpass) }}
     {{ wtf.form_field(form.submit) }}
 </form>
 
