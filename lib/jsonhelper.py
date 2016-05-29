@@ -1,5 +1,4 @@
 import os
-import platform
 from lib.pythonversionhelper import str_to_bytes
 import simplejson as json
 

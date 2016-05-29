@@ -1,6 +1,6 @@
 import logging
 import inspect
-from appconfig import AppConfig, ProductionAppConfig
+from appconfig import AppConfig
 
 
 class AppLogger:

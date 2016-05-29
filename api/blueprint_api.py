@@ -1,7 +1,7 @@
 from lib.appconfig import *
 from lib.applogger import AppLogger
 from lib.flaskhelper import *
-from lib.jsonhelper import dict_to_bytes, dict_to_json, json_to_dict, os_environ_to_dict
+from lib.jsonhelper import dict_to_bytes, json_to_dict, os_environ_to_dict
 from lib.crypt import PassCrypt
 from cryptography.fernet import InvalidToken
 from flask import Blueprint
@@ -108,8 +108,6 @@ def api_post_file():
         content_bytes = content_str
         
         content, cryptkey =  crypt.encrypt(content_bytes, cryptpass_str)
-        crypt2 = PassCrypt()
-        content_decrypted = crypt2.decrypt(content, cryptkey)
         item = { "%s" % db_id:  content }
     
     if cryptkey == None  or  cryptkey == "":

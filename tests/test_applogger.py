@@ -1,4 +1,3 @@
-import os
 import logging 
 from lib.appconfig import *
 from lib.applogger import AppLogger
