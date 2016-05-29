@@ -20,7 +20,5 @@ def str_to_bytes(str):
       return bytes(str)
 
 def bytes_to_str(str):
-    try:
-      return str.decode()
-    except TypeError:
-      return str.decode('utf-8')
+    return str.decode()
+

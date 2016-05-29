@@ -1,4 +1,3 @@
-import os
 from lib.appconfig import *
 from lib.applogger import AppLogger
 from lib.flaskhelper import *
