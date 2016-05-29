@@ -45,7 +45,8 @@ if appconfig.ENV == 'DEV':
     @blueprint.route('/api/env', methods=['GET'])
     @crossdomain(origin='*')
     def api_get_env():
-        return jsonify( os.environ )
+        env_dict = os.environ.__dict__
+        return jsonify( env_dict )
 
 @blueprint.route('/api/file', methods=['GET'])
 @crossdomain(origin='*')
