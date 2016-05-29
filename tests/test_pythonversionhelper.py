@@ -6,7 +6,7 @@ from nose.tools import assert_not_equal
 
 
 
-class TestCrypt(object):
+class TestPythonVersionHelper(object):
     @classmethod
     def setup_class(klass):
         """This method is run once for each class before any tests are run"""
