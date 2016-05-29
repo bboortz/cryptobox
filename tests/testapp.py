@@ -13,6 +13,8 @@ include_module_path("..")
 
 
 from lib.appconfig import *
+from lib.applogger import AppLogger
+from lib.jsonhelper import *
 from lib.flaskhelper import *
 from lib.blueprint_base import blueprint as blueprint_base
 from flask import Flask
@@ -21,6 +23,7 @@ from flask import jsonify
 
 
 appconfig = AppConfig.create_instance()
+LOGGER = AppLogger.create_instance(appconfig=appconfig)
 app = Flask(__name__)
 app.config.from_object(appconfig.FLASKCONFIG)
 app.register_blueprint(blueprint_base)
@@ -64,6 +67,20 @@ def post_origin_api_url():
     if content_str == None  or  content_str == ""  or  content_str.__sizeof__() == 0:
         abort(400)
     return jsonify( { 'status': 'green' } )
+    
+@app.route('/get_jsonify', methods=['GET'])
+def get_jsonify():
+    return jsonify( { 'status': 'green' } )
+    
+@app.route('/get_jsonify_environ', methods=['GET'])
+def get_jsonify_environ():
+    env = os_environ_to_dict()
+    LOGGER.debug(type(env))
+    LOGGER.debug(dir(env))
+    LOGGER.debug(os.environ.keys())
+    #env_dict = json_to_dict(env)
+    #abort(400)
+    return jsonify( env )
 
 if __name__ == '__main__':
     app.run(host=appconfig.IP, port=appconfig.PORT, threaded=True)

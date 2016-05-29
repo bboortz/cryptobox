@@ -86,3 +86,14 @@ class TestApp(object):
         rv = self.test_app.post('/post_origin_api_url', data=data , follow_redirects=False)
         assert_equal(rv.status_code, 400)
         assert_not_equal(rv.status_code, 405)
+        
+    def test_get_jsonify(self):
+        rv = self.test_app.get('/get_jsonify')
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 400) 
+        
+    def test_get_jsonify_environ(self):
+        rv = self.test_app.get('/get_jsonify_environ')
+        assert_equal(rv.status_code, 200)
+        assert_not_equal(rv.status_code, 400) 
+    

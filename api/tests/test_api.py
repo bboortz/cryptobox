@@ -10,10 +10,10 @@ include_module_path("..")
 
 
 from lib.pythonversionhelper import isinstance_of_string
+from lib.jsonhelper import dict_to_json, json_to_dict
 from app_api import app, appconfig
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
-import json
 
 
 
@@ -108,7 +108,7 @@ class TestApp(object):
         assert '"id": "0"' in str(rv.data)
         assert '"status": "success"' in str(rv.data)
         
-        data = json.loads( rv.data.decode() )
+        data = json_to_dict( rv.data.decode() )
         cryptkey = data['cryptkey']
         assert_equal(isinstance_of_string(cryptkey), True)
         assert_not_equal(isinstance_of_string(cryptkey), False)
@@ -120,7 +120,7 @@ class TestApp(object):
         assert_not_equal(rv.status_code, 201)
         print(rv.data)
         
-        data = json.loads( rv.data.decode() )
+        data = json_to_dict( rv.data.decode() )
         assert_equal(data['file'], 'beispiel text 123')
         
         
@@ -146,7 +146,7 @@ class TestApp(object):
         cryptpass='TESTKEY'
         headers = [('Content-Type', 'application/json'), ('cryptpass', cryptpass)]
         data = {'name': 'Jessy', 'testcase': 'test_post_file1_and_get'}
-        json_data = json.dumps(data)
+        json_data = dict_to_json(data)
         json_data_length = len(json_data)
         headers.append(('Content-Length', json_data_length))
         rv = self.test_app.post('/api/file', data=json_data, headers=headers, follow_redirects=False)
@@ -156,7 +156,7 @@ class TestApp(object):
         assert '"id": "1"' in str(rv.data)
         assert '"status": "success"' in str(rv.data)
         
-        data = json.loads( rv.data.decode() )
+        data = json_to_dict( rv.data.decode() )
         cryptkey = data['cryptkey']
         assert_equal(isinstance_of_string(cryptkey), True)
         assert_not_equal(isinstance_of_string(cryptkey), False)
@@ -167,7 +167,7 @@ class TestApp(object):
         
         assert_equal(rv.status_code, 200)
         assert_not_equal(rv.status_code, 201)
-        data = json.loads( rv.data.decode() )
+        data = json_to_dict( rv.data.decode() )
         #file_dict = json.loads(data['file'])
         assert_equal(data['file']['name'], 'Jessy')
         

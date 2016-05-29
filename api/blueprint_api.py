@@ -2,14 +2,14 @@ import os
 from lib.appconfig import *
 from lib.applogger import AppLogger
 from lib.flaskhelper import *
-from lib.jsonhelper import dict_to_bytes
+from lib.jsonhelper import dict_to_bytes, dict_to_json, json_to_dict, os_environ_to_dict
 from lib.crypt import PassCrypt
 from cryptography.fernet import InvalidToken
 from flask import Blueprint
 from flask import jsonify, make_response, request, abort
 from flask import url_for
 from flask import current_app
-import simplejson as json
+
 
 
 
@@ -45,8 +45,7 @@ if appconfig.ENV == 'DEV':
     @blueprint.route('/api/env', methods=['GET'])
     @crossdomain(origin='*')
     def api_get_env():
-        env_dict = os.environ.__dict__
-        return jsonify( env_dict )
+        return jsonify( os_environ_to_dict() )
 
 @blueprint.route('/api/file', methods=['GET'])
 @crossdomain(origin='*')
@@ -73,7 +72,7 @@ def api_get_file_id(file_id):
         abort(404)
     
     try:
-        file_dict = json.loads(file)
+        file_dict = json_to_dict(file)
         return make_response( jsonify( {'file': file_dict } ) , 200 )
     except Exception:
         return make_response( jsonify( {'file': file } ) , 200 )
