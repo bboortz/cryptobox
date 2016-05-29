@@ -1,6 +1,6 @@
 
 import base64
-from lib.pythonversionhelper import isinstance_of_string, str_to_bytes, bytes_to_str
+from lib.pythonversionhelper import str_to_bytes, bytes_to_str
 from lib.crypt import Crypt, PassCrypt, MultiCrypt
 from cryptography.fernet import InvalidToken
 from nose.tools import assert_equal
@@ -34,14 +34,12 @@ class TestCrypt(object):
 
     def test_crypt_encrypt_and_check_type(self):
         secret_msg = b"test message. foobar test. blub."
-        key = b"testkey"
         token = self.crypt.encrypt(secret_msg)
         assert_equal( isinstance(token, bytes), True)
         assert_not_equal( isinstance(token, bytes), False)
 
     def test_crypt_encrypt_and_decrypt(self):
         secret_msg = b"test message. foobar test. blub."
-        key = b"testkey"
         token = self.crypt.encrypt(secret_msg)
         new_msg = self.crypt.decrypt(token)
         assert_equal(secret_msg, new_msg)
@@ -50,12 +48,12 @@ class TestCrypt(object):
     @raises(InvalidToken)
     def test_crypt_encrypt_and_decrypt_invalidtoken(self):
         secret_msg = b"test message. foobar test. blub."
-        key = b"testkey"
         token = self.crypt.encrypt(secret_msg)
         token_str = bytes_to_str(token)
         token_str = "%s%s" % (token_str, 1)
         token = str_to_bytes(token_str)
         new_msg = self.crypt.decrypt(token)
+        assert_not_equal(secret_msg, new_msg)
 
 
 
@@ -116,6 +114,7 @@ class TestCrypt(object):
         token_str = "%s%s" % (token_str, 1)
         token = str_to_bytes(token_str)
         new_msg = self.passcrypt.decrypt(token, key)
+        assert_not_equal(secret_msg, new_msg)
 
     @raises(InvalidToken)
     def test_passcrypt_encrypt_and_decrypt_invalidtoken2(self):
@@ -123,6 +122,7 @@ class TestCrypt(object):
         password = b"testkey"
         token, key = self.passcrypt.encrypt(secret_msg, password)
         new_msg = self.passcrypt.decrypt(token, b'pakM9rPp1yFHrLN3K3zb0Z0oKoOc_aRYcbOTH1KO3yo=')
+        assert_not_equal(secret_msg, new_msg)
 
     def test_multicrypt_init(self):
         assert_equal(self.multicrypt.algorithm, "Fernet")
@@ -165,3 +165,4 @@ class TestCrypt(object):
         token_str = "%s%s" % (token_str, 1)
         token = str_to_bytes(token_str)
         new_msg = self.multicrypt.decrypt(token, key1, key2)
+        assert_not_equal(secret_msg, new_msg)
