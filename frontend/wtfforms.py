@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms.fields import TextAreaField, TextField, SubmitField
+from wtforms.fields import TextAreaField, TextField, SubmitField, HiddenField
 from wtforms.validators import Required
 
 class UploadForm(Form):
@@ -7,3 +7,20 @@ class UploadForm(Form):
     accesskey = TextField(u'The key to access your data', validators=[Required()])
     cryptpass = TextField(u'The key to encrypt your data', validators=[Required()])
     submit = SubmitField(u'submit')
+    
+    
+class AccessForm(Form):
+    id = TextField(u'The id', validators=[Required()])
+    accesskey = TextField(u'The key to access your data', validators=[Required()])
+    cryptkey = TextField(u'The key to decrypt your data', validators=[Required()])
+    submit = SubmitField(u'submit')
+    
+    
+class ResultForm(Form):
+    
+    def __init__(self, id, url, cryptkey):
+        self.id = HiddenField(id)
+        self.url = HiddenField(url)
+        self.cryptkey = HiddenField(cryptkey)
+        
+    submit = SubmitField(u'access content')
