@@ -17,4 +17,4 @@ def str_to_bytes(str):
     try:
       return str.encode()
     except:
-      return str
+      return str.encode('utf-8')
