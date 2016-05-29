@@ -1,10 +1,12 @@
 
-
-from lib.crypt import Crypt
+import base64
+from lib.crypt import Crypt, PassCrypt, MultiCrypt
+from cryptography.fernet import InvalidToken
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
 #from nose.tools import assert_raises
-#from nose.tools import raises
+from nose.tools import raises
+
 
 
 class TestCrypt(object):
@@ -19,37 +21,137 @@ class TestCrypt(object):
     def setUp(self):
         """This method is run once before _each_ test method is executed"""
         self.crypt = Crypt()
+        self.passcrypt = PassCrypt()
+        self.multicrypt = MultiCrypt()
 
     def teardown(self):
         """This method is run once after _each_ test method is executed"""
 
-    def test_init(self):
+    def test_crypt_init(self):
         assert_equal(self.crypt.algorithm, "Fernet")
         assert_not_equal(self.crypt.algorithm, "Incorrect Value")
 
-    def test_encrypt_and_decrypt(self):
+    def test_crypt_encrypt_and_check_type(self):
         secret_msg = b"test message. foobar test. blub."
+        key = b"testkey"
+        token = self.crypt.encrypt(secret_msg)
+        assert_equal(isinstance(token, basestring), True)
+        assert_not_equal(isinstance(token, basestring), False)
+
+    def test_crypt_encrypt_and_decrypt(self):
+        secret_msg = b"test message. foobar test. blub."
+        key = b"testkey"
         token = self.crypt.encrypt(secret_msg)
         new_msg = self.crypt.decrypt(token)
         assert_equal(secret_msg, new_msg)
         assert_not_equal(secret_msg, "test message.")
         
-        
-#    def test_encrypt(self):
-#        self.token = self.crypt.encrypt("lala")
-#        print self.token
-#        assert_equal(self.token, True)
-#        assert_not_equal(self.token, False)
-        
-#    def test_decrypt(self):
-#        assert_equal(self.crypt.decrypt(True, True), True)
-#        assert_not_equal(self.crypt.decrypt(True, True), False)
+    @raises(InvalidToken)
+    def test_crypt_encrypt_and_decrypt_invalidtoken(self):
+        secret_msg = b"test message. foobar test. blub."
+        key = b"testkey"
+        token = self.crypt.encrypt(secret_msg)
+        token = "%s%s" % (token, 1)
+        new_msg = self.crypt.decrypt(token)
 
-#    def test_raise_exc(self):
-#        a = A()
-#        assert_raises(KeyError, a.raise_exc, "A value")
 
-#    @raises(KeyError)
-#    def test_raise_exc_with_decorator(self):
-#        a = A()
-#        a.raise_exc("A message")
+
+    def test_passcrypt_init(self):
+        assert_equal(self.passcrypt.algorithm, "Fernet")
+        assert_not_equal(self.passcrypt.algorithm, "Incorrect Value")
+
+    def test_passcrypt_encrypt_and_check_type(self):
+        secret_msg = b"test message. foobar test. blub."
+        password = b"testkey"
+        token, key = self.passcrypt.encrypt(secret_msg, password)
+        assert_equal(isinstance(token, basestring), True)
+        assert_not_equal(isinstance(token, basestring), False)
+        assert_equal(isinstance(key, basestring), True)
+        assert_not_equal(isinstance(key, basestring), False)
+
+    def test_passcrypt_encrypt_and_decrypt(self):
+        secret_msg = b"test message. foobar test. blub."
+        password = b"testkey"
+        token, key = self.passcrypt.encrypt(secret_msg, password)
+        new_msg = self.passcrypt.decrypt(token, key)
+        assert_equal(secret_msg, new_msg)
+        assert_not_equal(new_msg, key)
+    
+    def test_passcrypt_encrypt_and_decrypt_without_b(self):
+        secret_msg = "test message. foobar test. blub."
+        password = "testkey"
+        token, key = self.passcrypt.encrypt(secret_msg, password)
+        new_msg = self.passcrypt.decrypt(token, key)
+        assert_equal(secret_msg, new_msg)
+        assert_not_equal(new_msg, key)
+    
+    def test_passcrypt_encrypt_and_decrypt_base64_test(self):
+        secret_msg = "test message. foobar test. blub."
+        password = "testkey"
+        token, key = self.passcrypt.encrypt(secret_msg, password)
+        key_base64 = base64.urlsafe_b64decode(key)
+        key_nobase64 = base64.urlsafe_b64encode(key_base64)
+        if len(key_base64) != 32:
+            raise ValueError(
+                "Fernet key must be 32 url-safe base64-encoded bytes."
+            )
+        assert_equal(key, key_nobase64)
+        assert_not_equal(key, key_base64)
+        
+        new_msg = self.passcrypt.decrypt(token, key_nobase64)
+        assert_equal(secret_msg, new_msg)
+        assert_not_equal(new_msg, key)
+        
+    @raises(InvalidToken)
+    def test_passcrypt_encrypt_and_decrypt_invalidtoken(self):
+        secret_msg = b"test message. foobar test. blub."
+        password = b"testkey"
+        token, key = self.passcrypt.encrypt(secret_msg, password)
+        token = "%s%s" % (token, 1)
+        new_msg = self.passcrypt.decrypt(token, key)
+
+    @raises(InvalidToken)
+    def test_passcrypt_encrypt_and_decrypt_invalidtoken2(self):
+        secret_msg = b"test message. foobar test. blub."
+        password = b"testkey"
+        token, key = self.passcrypt.encrypt(secret_msg, password)
+        new_msg = self.passcrypt.decrypt(token, b'pakM9rPp1yFHrLN3K3zb0Z0oKoOc_aRYcbOTH1KO3yo=')
+
+    def test_multicrypt_init(self):
+        assert_equal(self.multicrypt.algorithm, "Fernet")
+        assert_not_equal(self.multicrypt.algorithm, "Incorrect Value")
+
+    def test_multicrypt_encrypt_and_check_type(self):
+        secret_msg = b"test message. foobar test. blub."
+        password = b"testkey"
+        token, key1, key2 = self.multicrypt.encrypt(secret_msg, password)
+        assert_equal(isinstance(token, basestring), True)
+        assert_not_equal(isinstance(token, basestring), False)
+        assert_equal(isinstance(key1, basestring), True)
+        assert_not_equal(isinstance(key1, basestring), False)
+        assert_equal(isinstance(key2, basestring), True)
+        assert_not_equal(isinstance(key2, basestring), False)
+
+    def test_multicrypt_encrypt_and_decrypt(self):
+        secret_msg = b"test message. foobar test. blub."
+        password = b"testkey"
+        token, key1, key2 = self.multicrypt.encrypt(secret_msg, password)
+        new_msg = self.multicrypt.decrypt(token, key1, key2)
+        assert_equal(secret_msg, new_msg)
+        assert_not_equal(new_msg, key1)
+        
+    def test_multicrypt_encrypt_and_decrypt_different_order(self):
+        secret_msg = b"test message. foobar test. blub."
+        password = b"testkey"
+        token, key1, key2 = self.multicrypt.encrypt(secret_msg, password)
+        new_msg = self.multicrypt.decrypt(token, key2, key1)
+        assert_equal(secret_msg, new_msg)
+        assert_not_equal(new_msg, key1)
+        
+    @raises(InvalidToken)
+    def test_multicrypt_encrypt_and_decrypt_invalidtoken(self):
+        secret_msg = b"test message. foobar test. blub."
+        password = b"testkey"
+        token, key1, key2 = self.multicrypt.encrypt(secret_msg, password)
+        token = "%s%s" % (token, 1)
+        new_msg = self.multicrypt.decrypt(token, key1, key2)
