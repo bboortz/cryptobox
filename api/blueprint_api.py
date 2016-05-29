@@ -98,22 +98,17 @@ def api_post_file():
         if json_dict == None:
             abort(401)
         json_bytes=dict_to_bytes(json_dict)
-        # TODO / FIX ME
         content, cryptkey = crypt.encrypt(json_bytes, cryptpass_str)
         item = { "%s" % db_id: content }
         
     else:
         content_str=request.form['content']
-        if content_str == None  or  content_str == ""  or  content_str.__sizeof__() == 0:
-            abort(400)
+        abort_on_zero_string(content_str)
         content_bytes = content_str
-        
         content, cryptkey =  crypt.encrypt(content_bytes, cryptpass_str)
         item = { "%s" % db_id:  content }
     
-    if cryptkey == None  or  cryptkey == "":
-        abort(400)
-    
+    abort_on_zero_string(cryptkey)
     
     new_id = db_id    
     url = "%s/%d" % (url_for('api.api_get_file', _external=True), new_id)

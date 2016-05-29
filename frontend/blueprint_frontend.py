@@ -68,10 +68,3 @@ def get_list():
 @blueprint.route('/documentation', methods=['GET'])
 def get_documentation():
     return render_template('documentation.html')
-
-# Define a route for the default URL, which loads the form
-#@blueprint.route('/js/<path:path>', methods=['GET'])
-#def get_js(path):
-#    mimetype = "application/javascript"
-#    return send_from_directory(directory='frontend/static/js', filename=path, mimetype=mimetype)
-
