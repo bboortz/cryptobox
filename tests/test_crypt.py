@@ -1,6 +1,6 @@
 
 import base64
-from lib.pythonversionhelper import isinstance_of_string
+from lib.pythonversionhelper import isinstance_of_string, str_to_bytes, bytes_to_str
 from lib.crypt import Crypt, PassCrypt, MultiCrypt
 from cryptography.fernet import InvalidToken
 from nose.tools import assert_equal
@@ -36,8 +36,8 @@ class TestCrypt(object):
         secret_msg = b"test message. foobar test. blub."
         key = b"testkey"
         token = self.crypt.encrypt(secret_msg)
-        assert_equal(isinstance_of_string(token), True)
-        assert_not_equal(isinstance_of_string(token), False)
+        assert_equal( isinstance(token, bytes), True)
+        assert_not_equal( isinstance(token, bytes), False)
 
     def test_crypt_encrypt_and_decrypt(self):
         secret_msg = b"test message. foobar test. blub."
@@ -52,7 +52,9 @@ class TestCrypt(object):
         secret_msg = b"test message. foobar test. blub."
         key = b"testkey"
         token = self.crypt.encrypt(secret_msg)
-        token = "%s%s" % (token, 1)
+        token_str = bytes_to_str(token)
+        token_str = "%s%s" % (token_str, 1)
+        token = str_to_bytes(token_str)
         new_msg = self.crypt.decrypt(token)
 
 
@@ -65,17 +67,18 @@ class TestCrypt(object):
         secret_msg = b"test message. foobar test. blub."
         password = b"testkey"
         token, key = self.passcrypt.encrypt(secret_msg, password)
-        assert_equal(isinstance_of_string(token), True)
-        assert_not_equal(isinstance_of_string(token), False)
-        assert_equal(isinstance_of_string(key), True)
-        assert_not_equal(isinstance_of_string(token), False)
+        assert_equal( isinstance(token, bytes), True)
+        assert_not_equal( isinstance(token, bytes), False)
+        assert_equal( isinstance(key, bytes), True)
+        assert_not_equal( isinstance(key, bytes), False)
 
     def test_passcrypt_encrypt_and_decrypt(self):
         secret_msg = b"test message. foobar test. blub."
+        secret_msg_str = bytes_to_str(secret_msg)
         password = b"testkey"
         token, key = self.passcrypt.encrypt(secret_msg, password)
         new_msg = self.passcrypt.decrypt(token, key)
-        assert_equal(secret_msg, new_msg)
+        assert_equal(secret_msg_str, new_msg)
         assert_not_equal(new_msg, key)
     
     def test_passcrypt_encrypt_and_decrypt_without_b(self):
@@ -108,7 +111,10 @@ class TestCrypt(object):
         secret_msg = b"test message. foobar test. blub."
         password = b"testkey"
         token, key = self.passcrypt.encrypt(secret_msg, password)
-        token = "%s%s" % (token, 1)
+        token = self.crypt.encrypt(secret_msg)
+        token_str = bytes_to_str(token)
+        token_str = "%s%s" % (token_str, 1)
+        token = str_to_bytes(token_str)
         new_msg = self.passcrypt.decrypt(token, key)
 
     @raises(InvalidToken)
@@ -126,12 +132,12 @@ class TestCrypt(object):
         secret_msg = b"test message. foobar test. blub."
         password = b"testkey"
         token, key1, key2 = self.multicrypt.encrypt(secret_msg, password)
-        assert_equal(isinstance_of_string(token), True)
-        assert_not_equal(isinstance_of_string(token), False)
-        assert_equal(isinstance_of_string(key1), True)
-        assert_not_equal(isinstance_of_string(key1), False)
-        assert_equal(isinstance_of_string(key2), True)
-        assert_not_equal(isinstance_of_string(key2), False)
+        assert_equal( isinstance(token, bytes), True)
+        assert_not_equal( isinstance(token, bytes), False)
+        assert_equal( isinstance(key1, bytes), True)
+        assert_not_equal( isinstance(key1, bytes), False)
+        assert_equal( isinstance(key2, bytes), True)
+        assert_not_equal( isinstance(key2, bytes), False)
 
     def test_multicrypt_encrypt_and_decrypt(self):
         secret_msg = b"test message. foobar test. blub."
@@ -154,5 +160,8 @@ class TestCrypt(object):
         secret_msg = b"test message. foobar test. blub."
         password = b"testkey"
         token, key1, key2 = self.multicrypt.encrypt(secret_msg, password)
-        token = "%s%s" % (token, 1)
+        token = self.crypt.encrypt(secret_msg)
+        token_str = bytes_to_str(token)
+        token_str = "%s%s" % (token_str, 1)
+        token = str_to_bytes(token_str)
         new_msg = self.multicrypt.decrypt(token, key1, key2)

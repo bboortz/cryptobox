@@ -1,6 +1,6 @@
 import os
 import base64
-from lib.pythonversionhelper import isinstance_of_string, str_to_bytes
+from lib.pythonversionhelper import isinstance_of_string, str_to_bytes, bytes_to_str
 from cryptography.fernet import Fernet, MultiFernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -50,7 +50,8 @@ class PassCrypt:
         
     def decrypt(self, token, key):
         f = Fernet(key)
-        return f.decrypt(token)
+        msg = f.decrypt(token)
+        return bytes_to_str(msg)
 
 
 class MultiCrypt:

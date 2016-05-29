@@ -18,5 +18,15 @@ def str_to_bytes(str):
       #return bytes(str, 'utf-8')
       return str.encode()
     except TypeError:
+      #return bytes(str)
+      return str.encode('utf-8')
+    except AttributeError:
       return bytes(str)
-      #return str.encode('utf-8')
+
+def bytes_to_str(str):
+    try:
+      #return bytes(str, 'utf-8')
+      return str.decode()
+    except TypeError:
+      #return bytes(str)
+      return str.decode('utf-8')
