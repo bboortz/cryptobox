@@ -16,5 +16,5 @@ def isinstance_of_string(obj):
 def str_to_bytes(str):
     try:
       return str.encode()
-    except:
+    except Exception:
       return str.encode('utf-8')
