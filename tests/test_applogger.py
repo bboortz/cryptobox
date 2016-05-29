@@ -31,8 +31,12 @@ class TestAppConfig(object):
         applogger.warn("if you see this, this testcase probably failed.")
         assert_equal(applogger.log.name, __name__)
         assert_not_equal(applogger.log.name, "applogger")
-        assert_equal(currentLogLevel , 'INFO')
-        assert_not_equal(currentLogLevel , 'DEBUG')
+        
+        loglevel = logging.getLevelName( logging.INFO )
+        if self.currentconfig.ENV != 'PROD':
+            loglevel = logging.getLevelName( logging.DEBUG )
+        assert_equal(currentLogLevel , loglevel)
+        assert_not_equal(currentLogLevel , 'CRITICAL')
         
     def test_create_instance_with_name(self):
         applogger = AppLogger.create_instance(__name__)
@@ -41,8 +45,12 @@ class TestAppConfig(object):
         applogger.warn("logging module name: %s" % applogger.log.name)
         assert_equal(applogger.log.name, __name__)
         assert_not_equal(applogger.log.name, "applogger")
-        assert_equal(currentLogLevel , 'INFO')
-        assert_not_equal(currentLogLevel , 'DEBUG')
+        
+        loglevel = logging.getLevelName( logging.INFO )
+        if self.currentconfig.ENV != 'PROD':
+            loglevel = logging.getLevelName( logging.DEBUG )
+        assert_equal(currentLogLevel , loglevel)
+        assert_not_equal(currentLogLevel , 'CRITICAL')
 
     def test_create_instance_prod(self):
         applogger = AppLogger.create_instance(__name__, self.prodconfig)
