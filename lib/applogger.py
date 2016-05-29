@@ -27,7 +27,6 @@ class AppLogger:
     def caller_name():
         frm = inspect.stack()[2]
         mod = inspect.getmodule(frm[0])
-        print "__name__: %s" % mod.__name__
         return mod.__name__
 
     @staticmethod
