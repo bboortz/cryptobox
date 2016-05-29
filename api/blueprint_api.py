@@ -56,8 +56,7 @@ def api_get_file():
 @crossdomain(origin='*')
 def api_get_file_id(file_id):
     cryptkey = request.headers.get('cryptkey')
-    if cryptkey == None  or  cryptkey == ""  or  cryptkey.__sizeof__() == 0:
-        abort(400)
+    abort_on_zero_string(cryptkey)
         
     file_id_str = str(file_id)
     if not file_id_str in db:
@@ -67,6 +66,8 @@ def api_get_file_id(file_id):
     try:
         file = crypt.decrypt(db[file_id_str], encoded_cryptkey)
     except InvalidToken:
+        abort(404)
+    except ValueError:
         abort(404)
     if file == None  or  file == ""  or  file.__sizeof__() == 0:
         abort(404)
@@ -90,8 +91,7 @@ def api_post_file():
     cryptpass_str = request.form.get('cryptpass')
     if cryptpass_str == None:
         cryptpass_str = request.headers.get('cryptpass')
-    if cryptpass_str == None  or  cryptpass_str == ""  or  cryptpass_str.__sizeof__() == 0:
-        abort(400)
+    abort_on_zero_string(cryptpass_str)
     
     if is_mimetype_json():
         json_dict = request.get_json()
