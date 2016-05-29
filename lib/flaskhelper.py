@@ -1,6 +1,6 @@
 from lib.pythonversionhelper import isinstance_of_string
 from datetime import timedelta
-from flask import make_response, request, current_app
+from flask import make_response, request, current_app, abort
 from functools import update_wrapper
 
 
@@ -10,6 +10,13 @@ def is_mimetype_json():
         return True
         
     return False
+    
+    
+def abort_on_zero_string(the_str):
+    if not isinstance_of_string(the_str):
+        abort(400)
+    if the_str == None  or  the_str == ""  or  the_str.__sizeof__() == 0:
+        abort(400)
     
     
 
