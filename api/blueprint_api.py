@@ -1,6 +1,7 @@
 from lib.appconfig import *
 from lib.applogger import AppLogger
 from lib.flaskhelper import *
+from lib.pythonversionhelper import str_to_bytes
 from lib.jsonhelper import dict_to_bytes, json_to_dict, os_environ_to_dict
 from lib.crypt import PassCrypt
 from cryptography.fernet import InvalidToken
@@ -62,7 +63,7 @@ def api_get_file_id(file_id):
     if not file_id_str in db:
         abort(404)
     
-    encoded_cryptkey = cryptkey.encode('UTF-8')
+    encoded_cryptkey = str_to_bytes(cryptkey)
     try:
         file = crypt.decrypt(db[file_id_str], encoded_cryptkey)
     except InvalidToken:
